@@ -28,15 +28,14 @@ public class ServiceEntityDTO
 
     Boolean active;
 
-    public ServiceEntityDTO(ServiceEntity entity)
+    public ServiceEntityDTO(ServiceEntity entity, String lang)
     {
         this.id = entity.getId();
         this.nameUz = entity.getNameUz();
         this.nameRu = entity.getNameRu();
 
-        List<ServiceOptionDTO> temp = new ArrayList<ServiceOptionDTO>();
-        entity.getOption().forEach(i -> temp.add(new ServiceOptionDTO(i)));
-        this.option = temp;
+        this.option = new ArrayList<>();
+        entity.getOption().forEach(i -> this.option.add(new ServiceOptionDTO(i, lang)));
 
         this.icon = new PhotoDTO(entity.getIcon());
         this.active = entity.getActive();

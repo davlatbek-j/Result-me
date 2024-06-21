@@ -1,49 +1,49 @@
 package uz.resultme.payload;
 
 import jakarta.persistence.ElementCollection;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.ServiceOption;
+import uz.resultme.entity.CaseResult;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceOptionDTO
+public class CaseResultDTO
 {
     Long id;
 
-    String nameUz;
+    String title;
 
-    String nameRu;
+    List<String> value;
 
-    List<String> valueUz;
-
-    List<String> valueRu;
-
-    public ServiceOptionDTO(ServiceOption entity , String lang)
+    public CaseResultDTO(CaseResult entity , String lang)
     {
         this.id = entity.getId();
+
         switch (lang)
         {
             case "uz":
             {
-                this.nameUz = entity.getNameUz();
-                this.valueUz = entity.getValueUz();
+                this.title= entity.getTitleUz();
+                this.value = entity.getValueUz();
                 break;
             }
             case "ru":
             {
-                this.nameRu = entity.getNameRu();
-                this.valueRu = entity.getValueRu();
+                this.title= entity.getTitleRu();
+                this.value = entity.getValueRu();
                 break;
             }
 
         }
-
     }
-
 }

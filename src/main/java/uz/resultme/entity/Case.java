@@ -15,6 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
+@Table(name = "cases")
 public class Case
 {
     @Id
@@ -33,12 +34,6 @@ public class Case
 
     String nameRu;
 
-    String result;
-
-    String resultDescriptionUz;
-
-    String resultDescriptionRu;
-
     String aboutUz;
 
     String aboutRu;
@@ -50,11 +45,16 @@ public class Case
     List<String> requestRu;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<Solution> solution;
+    List<CaseEffect> effect;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<CaseResult> caseResult;
 
     @OneToOne(cascade = CascadeType.ALL)
     Photo mainPhoto;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Photo> gallery;
+
+    Boolean active;
 }

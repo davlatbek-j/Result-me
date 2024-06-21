@@ -28,9 +28,11 @@ public class ServiceController
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(@PathVariable Long id)
+    public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language") String lang)
     {
-        return entityService.findById(id);
+        return entityService.findById(id,lang);
     }
 
     @GetMapping("/get-all")
@@ -45,7 +47,7 @@ public class ServiceController
             @RequestParam(name = "icon") MultipartFile file,
             @RequestParam(name = "json") String json)
     {
-        return entityService.update(id,json,file);
+        return entityService.update(id, json, file);
     }
 
     @DeleteMapping("/delete/{id}")

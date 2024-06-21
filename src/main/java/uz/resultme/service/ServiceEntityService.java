@@ -13,7 +13,6 @@ import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.ServiceEntityDTO;
 import uz.resultme.repository.ServiceEntityRepository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class ServiceEntityService
 
     }
 
-    public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(Long id)
+    public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(Long id, String lang)
     {
         ApiResponse<ServiceEntityDTO> response = new ApiResponse<>();
         if (!serviceRepo.existsById(id))
