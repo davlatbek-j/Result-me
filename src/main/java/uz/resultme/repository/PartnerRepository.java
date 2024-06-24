@@ -12,4 +12,7 @@ public interface PartnerRepository extends JpaRepository<Partner,Long> {
 
     @Override
     List<Partner> findAll();
+
+
+    Partner findPartnerByPartnerUrl(String url);
 }

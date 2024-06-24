@@ -49,4 +49,9 @@ public class PartnerController {
     public List<Partner> getAllPartners() {
         return partnerService.getAllPartners();
     }
+
+    @GetMapping("/{url}")
+    public Partner getPartnerByUrl(@PathVariable String url){
+        return partnerService.getPartnerByUrl(url);
+    }
 }

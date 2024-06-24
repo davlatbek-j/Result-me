@@ -54,4 +54,8 @@ public class PartnerService {
     public List<Partner> getAllPartners() {
         return partnerRepository.findAll();
     }
+
+    public Partner getPartnerByUrl(String url){
+        return partnerRepository.findPartnerByPartnerUrl(url);
+    }
 }

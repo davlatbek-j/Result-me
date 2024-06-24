@@ -18,9 +18,10 @@ import lombok.experimental.FieldDefaults;
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String instagram;
-    private String telegram;
-    private String facebook;
+     Long id;
+     Integer orderNum;
+     String instagram;
+     String telegram;
+     String facebook;
 
 }
