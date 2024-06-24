@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.AuthResponse;
 import uz.resultme.payload.SignIn;
 import uz.resultme.service.AuthService;
 
@@ -19,7 +20,7 @@ public class AuthController
     private final AuthService authService;
 
     @GetMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(@RequestBody SignIn signIn)
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@RequestBody SignIn signIn)
     {
         return authService.login(signIn);
     }
