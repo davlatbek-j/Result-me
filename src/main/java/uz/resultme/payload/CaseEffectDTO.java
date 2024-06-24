@@ -1,49 +1,43 @@
 package uz.resultme.payload;
 
-import jakarta.persistence.ElementCollection;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.ServiceOption;
+import uz.resultme.entity.CaseEffect;
 import uz.resultme.exception.LanguageNotSupportException;
 
-import java.util.List;
-
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceOptionDTO
+public class CaseEffectDTO
 {
     Long id;
 
-    String name;
+    String value;
 
-    List<String> value;
+    String effectDescription;
 
-    public ServiceOptionDTO(ServiceOption entity , String lang)
+    public CaseEffectDTO(CaseEffect entity, String lang)
     {
         this.id = entity.getId();
-        switch (lang.toLowerCase())
+        this.value = entity.getValue();
+        switch (lang)
         {
             case "uz":
             {
-                this.name = entity.getNameUz();
-                this.value = entity.getValueUz();
+                this.effectDescription = entity.getEffectDescriptionUz();
                 break;
             }
             case "ru":
             {
-                this.name = entity.getNameRu();
-                this.value = entity.getValueRu();
+                this.effectDescription = entity.getEffectDescriptionRu();
                 break;
             }
             default:
-            {
                 throw new LanguageNotSupportException("Language not supported: " + lang);
-            }
         }
-
     }
-
 }

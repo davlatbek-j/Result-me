@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.resultme.entity.ProvidedResult;
 import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.ProvidedResultDTO;
 import uz.resultme.repository.ProvidedResultRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,16 +31,24 @@ public class ResultService
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<ProvidedResult>>> getAll()
+    public ResponseEntity<ApiResponse<List<ProvidedResultDTO>>> getAll(String lang)
     {
-        List<ProvidedResult> all = resultRepo.findAll();
-        ApiResponse<List<ProvidedResult>> response = new ApiResponse<>();
-        response.setMessage("List of Предоставляемые результаты");
-        response.setData(all);
+        List<ProvidedResult> allEntity = resultRepo.findAll();
+        List<ProvidedResultDTO> dtoList = new ArrayList<>();
+        ApiResponse<List<ProvidedResultDTO>> response = new ApiResponse<>();
 
+        response.setMessage(lang);
+        try
+        {
+            allEntity.forEach(i -> dtoList.add(new ProvidedResultDTO(i, lang)));
+        } catch (IllegalArgumentException e)
+        {
+            response.setMessage(e.getMessage());
+        }
+
+        response.setData(dtoList);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
 
     public ResponseEntity<ApiResponse<ProvidedResult>> update(Long id, ProvidedResult providedResult)
     {
@@ -67,4 +77,25 @@ public class ResultService
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    public ResponseEntity<ApiResponse<ProvidedResultDTO>> findById(Long id, String lang)
+    {
+        ApiResponse<ProvidedResultDTO> response = new ApiResponse<>();
+        if (!resultRepo.existsById(id))
+        {
+            response.setMessage("Not Found by id:" + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+         ProvidedResult entity = resultRepo.findById(id).get();
+
+        try
+        {
+            response.setMessage(lang);
+            response.setData(new ProvidedResultDTO(entity, lang));
+        } catch (IllegalArgumentException e)
+        {
+            response.setMessage(e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
 }

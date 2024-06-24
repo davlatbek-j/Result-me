@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uz.resultme.entity.ProvidedResult;
 import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.ProvidedResultDTO;
 import uz.resultme.service.ResultService;
 
 import java.util.List;
@@ -24,10 +25,19 @@ public class ProvidedResultController
         return resultService.save(providedResult);
     }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<ProvidedResult>>> getAll()
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse<ProvidedResultDTO>> findById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language") String lang)
     {
-        return resultService.getAll();
+        return resultService.findById(id,lang);
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<ProvidedResultDTO>>> getAll(
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return resultService.getAll(lang);
     }
 
     @PutMapping("/edit/{id}")
