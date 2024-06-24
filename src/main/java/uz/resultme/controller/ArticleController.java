@@ -34,7 +34,30 @@ public class ArticleController
             @PathVariable Long id,
             @RequestHeader(value = "Accepted-Language") String lang)
     {
-        return articleService.getById(id,lang);
+        return articleService.getById(id, lang);
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(
+            @RequestHeader(value = "Accepted-Language") String lang)
+    {
+        return articleService.findAll(lang);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<Article>> update(
+            @PathVariable Long id,
+            @RequestParam(name = "json",required = false)String json,
+            @RequestPart(name = "main-photo",required = false)MultipartFile mainPhoto,
+            @RequestPart(name = "gallery",required = false) List<MultipartFile> gallery)
+    {
+        return articleService.update(id,json,mainPhoto,gallery);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<Article>> delete(@PathVariable Long id)
+    {
+        return articleService.delete(id);
     }
 }
 

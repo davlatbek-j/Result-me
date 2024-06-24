@@ -46,7 +46,7 @@ public class ArticleService
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (JsonProcessingException e)
         {
-            response.setMessage("Error on parsing json " + e.getMessage());
+            response.setMessage("Error on parsing json");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
@@ -63,8 +63,82 @@ public class ArticleService
         Article article = articleRepository.findById(id).get();
         response.setMessage("Found article with id " + id);
 
-        response.setData(new ArticleDTO(article,lang));
+        response.setData(new ArticleDTO(article, lang));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(String lang)
+    {
+        ApiResponse<List<ArticleDTO>> response = new ApiResponse<>();
+        List<Article> articles = articleRepository.findAll();
+        response.setMessage("Found " + articles.size() + " article(s)");
+        response.setData(new ArrayList<>());
+        articles.forEach(i -> response.getData().add(new ArticleDTO(i, lang)));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, List<MultipartFile> newGallery)
+    {
+        ApiResponse<Article> response = new ApiResponse<>();
+        if (!articleRepository.existsById(id))
+        {
+            response.setMessage("Article with id " + id + " does not exist");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        try
+        {
+            Article newArticle = articleRepository.findById(id).get();
+
+            Photo oldMain = newArticle.getMainPhoto();
+            List<Photo> oldGallery = newArticle.getGallery();
+
+            if (json != null)
+            {
+                ObjectMapper objMapper = new ObjectMapper();
+                newArticle = objMapper.readValue(json, Article.class);
+            }
+
+            if (newMainPhoto == null || newMainPhoto.isEmpty())
+                newArticle.setMainPhoto(oldMain);
+            else
+                newArticle.setMainPhoto(photoService.save(newMainPhoto));
+
+            if (newGallery == null || newGallery.get(0).isEmpty())
+                newArticle.setGallery(oldGallery);
+            else
+            {
+                newArticle.setGallery(new ArrayList<>());
+                for (MultipartFile multipartFile : newGallery)
+                    if (multipartFile.getSize() > 0)
+                        newArticle.getGallery().add(photoService.save(multipartFile));
+            }
+
+            newArticle.setId(id);
+            articleRepository.save(newArticle);
+
+            response.setMessage("Successfully updated");
+            response.setData(newArticle);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (JsonProcessingException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResponseEntity<ApiResponse<Article>> delete(Long id)
+    {
+        ApiResponse<Article> response = new ApiResponse<>();
+        try
+        {
+            articleRepository.deleteById(id);
+            response.setMessage("Successfully deleted");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -1,9 +1,7 @@
 package uz.resultme.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +19,12 @@ public class Plan
     Long id;
 
     String nameUz;
-    String nameRU;
 
+    String nameRu;
+
+    @Column(length = 1000)
     String textUz;
+
+    @Column(length = 1000)
     String textRu;
 }

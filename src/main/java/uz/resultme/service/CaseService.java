@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Case;
 import uz.resultme.entity.Photo;
-import uz.resultme.payload.*;
+import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.CaseDTO;
 import uz.resultme.repository.CaseRepository;
 
 import java.util.ArrayList;
@@ -133,21 +134,22 @@ public class CaseService
                 newCase = objectMapper.readValue(caseJson, Case.class);
             }
 
-            if (newMainPhoto != null) //If not empty
-                newCase.setMainPhoto(photoService.save(newMainPhoto));
-            else
+            if (newMainPhoto == null || newMainPhoto.isEmpty())
                 newCase.setMainPhoto(oldMainPhoto);
+            else
+                newCase.setMainPhoto(photoService.save(newMainPhoto));
 
-            if (newGallery != null) //If not empty
+            if (newGallery == null || newGallery.isEmpty())
+                newCase.setGallery(oldGallery);
+            else
             {
                 newCase.setGallery(new ArrayList<>());
 
                 for (MultipartFile multipartFile : newGallery)
                     newCase.getGallery().add(photoService.save(multipartFile));
-            } else
-                newCase.setGallery(oldGallery);
+            }
 
-            newCase.setId(id);
+                newCase.setId(id);
             Case save = caseRepository.save(newCase);
 
             response.setMessage("Updated");

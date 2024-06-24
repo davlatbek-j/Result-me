@@ -41,7 +41,7 @@ public class ArticleDTO
 
         switch (lang.toLowerCase())
         {
-            case "en":
+            case "uz":
             {
                 this.title = entity.getTitleUz();
                 this.theme = entity.getThemeUz();

@@ -33,7 +33,7 @@ public class PlanDTO
             }
             case "ru":
             {
-                this.name = entity.getNameRU();
+                this.name = entity.getNameRu();
                 this.text = entity.getTextRu();
                 break;
             }
