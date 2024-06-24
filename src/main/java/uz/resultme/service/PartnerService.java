@@ -10,6 +10,9 @@ import uz.resultme.entity.Photo;
 import uz.resultme.payload.PartnerDTO;
 import uz.resultme.repository.PartnerRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class PartnerService {
@@ -28,5 +31,27 @@ public class PartnerService {
         partnerRepository.save(partner);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new PartnerDTO(partner));
+    }
+
+    public Partner updatePartner(Long id, Partner partnerDetails) {
+        Optional<Partner> optionalPartner = partnerRepository.findById(id);
+        if (optionalPartner.isPresent()) {
+            Partner existingPartner = optionalPartner.get();
+            existingPartner.setPhoto(partnerDetails.getPhoto());
+            return partnerRepository.save(existingPartner);
+        } else {
+            throw new RuntimeException("Partner not found with id " + id);
+        }
+    }
+
+    public void deletePartner(Long id) {
+        if (partnerRepository.existsById(id)) {
+            partnerRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Partner not found with id " + id);
+        }
+    }
+    public List<Partner> getAllPartners() {
+        return partnerRepository.findAll();
     }
 }
