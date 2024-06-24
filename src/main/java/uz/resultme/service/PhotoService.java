@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Photo;
-import uz.resultme.entity.enums.PhotoType;
+import uz.resultme.exception.IllegalPhotoTypeException;
 import uz.resultme.repository.PhotoRepository;
 
 import java.io.File;
@@ -30,7 +30,13 @@ public class PhotoService
 
     public Photo save(MultipartFile file)
     {
-        System.err.println("file.getContentType() = " + file.getContentType());
+        if (!(file.getContentType().equals("image/png") ||
+              file.getContentType().equals("image/svg+xml")||
+                file.getContentType().equals("image/jpeg")))
+        {
+            throw new IllegalPhotoTypeException("Unsupported image type: " + file.getContentType());
+        }
+
         try
         {
             File uploadDir = new File(photoUploadPath);

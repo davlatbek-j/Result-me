@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uz.resultme.entity.Case;
+import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,7 @@ public class CaseDTO
             }
             default:
             {
-                throw new RuntimeException("Invalid language: " + lang);
+                throw new LanguageNotSupportException("Language not supported: " + lang);
             }
         }
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.resultme.entity.ServiceEntity;
 import uz.resultme.entity.ServiceOption;
+import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,7 @@ public class ServiceEntityDTO
 {
     Long id;
 
-    String nameUz;
-
-    String nameRu;
+    String name;
 
     List<ServiceOptionDTO> option;
 
@@ -31,14 +30,30 @@ public class ServiceEntityDTO
     public ServiceEntityDTO(ServiceEntity entity, String lang)
     {
         this.id = entity.getId();
-        this.nameUz = entity.getNameUz();
-        this.nameRu = entity.getNameRu();
+        this.icon = new PhotoDTO(entity.getIcon());
+        this.active = entity.getActive();
+
+        switch (lang.toLowerCase())
+        {
+            case "uz":
+            {
+                this.name = entity.getNameUz();
+                break;
+            }
+            case "ru":
+            {
+                this.name = entity.getNameRu();
+                break;
+            }
+            default:
+            {
+                throw new LanguageNotSupportException("Language not supported: " + lang);
+            }
+        }
 
         this.option = new ArrayList<>();
         entity.getOption().forEach(i -> this.option.add(new ServiceOptionDTO(i, lang)));
 
-        this.icon = new PhotoDTO(entity.getIcon());
-        this.active = entity.getActive();
     }
 
 }

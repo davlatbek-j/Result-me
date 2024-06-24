@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.resultme.entity.CaseResult;
+import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CaseResultDTO
 
     List<String> value;
 
-    public CaseResultDTO(CaseResult entity , String lang)
+    public CaseResultDTO(CaseResult entity, String lang)
     {
         this.id = entity.getId();
 
@@ -33,17 +34,18 @@ public class CaseResultDTO
         {
             case "uz":
             {
-                this.title= entity.getTitleUz();
+                this.title = entity.getTitleUz();
                 this.value = entity.getValueUz();
                 break;
             }
             case "ru":
             {
-                this.title= entity.getTitleRu();
+                this.title = entity.getTitleRu();
                 this.value = entity.getValueRu();
                 break;
             }
-
+            default:
+                throw new LanguageNotSupportException("Language not support: " + lang);
         }
     }
 }

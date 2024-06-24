@@ -26,7 +26,7 @@ public class ProvidedResultDTO
         this.id = entity.getId();
         this.name = entity.getName();
         this.active = entity.getActive();
-        switch (lang)
+        switch (lang.toLowerCase())
         {
             case "uz":
             {
@@ -37,6 +37,10 @@ public class ProvidedResultDTO
             {
                 this.description= entity.getDescriptionRu();
                 break;
+            }
+            default:
+            {
+                throw new IllegalArgumentException("Language not supported: " + lang);
             }
         }
     }

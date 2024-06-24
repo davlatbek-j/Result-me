@@ -26,8 +26,8 @@ public class CaseController
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Case>> createCase(
             @RequestParam(name = "json") String caseJson,
-            @RequestParam(name = "main-photo") MultipartFile mainPhoto,
-            @RequestParam(name = "gallery") List<MultipartFile> gallery)
+            @RequestPart(name = "main-photo") MultipartFile mainPhoto,
+            @RequestPart(name = "gallery") List<MultipartFile> gallery)
     {
         return caseService.create(caseJson,mainPhoto,gallery);
     }

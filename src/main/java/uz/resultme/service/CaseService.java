@@ -47,7 +47,7 @@ public class CaseService
 
         } catch (JsonProcessingException e)
         {
-            response.setMessage("Error on parsing json " + e.getMessage());
+            response.setMessage("Error on parsing json ");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
@@ -63,28 +63,11 @@ public class CaseService
 
         Case aCase = caseRepository.findById(id).get();
 
-        switch (lang.toLowerCase())
-        {
-            case "uz":
-            {
-                CaseDTO dto = new CaseDTO(aCase, "uz");
-                response.setMessage("uz");
-                response.setData(dto);
-                return ResponseEntity.ok(response);
-            }
-            case "ru":
-            {
-                CaseDTO dto = new CaseDTO(aCase, "ru");
-                response.setMessage("ru");
-                response.setData(dto);
-                return ResponseEntity.ok(response);
-            }
-            default:
-            {
-                response.setMessage("Invalid language " + lang);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
-        }
+        CaseDTO dto = new CaseDTO(aCase, lang);
+        response.setMessage(lang);
+        response.setData(dto);
+
+        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<ApiResponse<List<CaseDTO>>> findAll(String lang)
@@ -95,28 +78,17 @@ public class CaseService
 
         List<CaseDTO> caseDTOList = new ArrayList<>();
 
-        switch (lang.toLowerCase())
+        try
         {
-            case "uz":
-            {
-                caseList.forEach(i -> caseDTOList.add(new CaseDTO(i, "uz")));
-                response.setMessage("uz");
-                response.setData(caseDTOList);
-                return ResponseEntity.ok(response);
-            }
-            case "ru":
-            {
-                caseList.forEach(i -> caseDTOList.add(new CaseDTO(i, "ru")));
-                response.setMessage("ru");
-                response.setData(caseDTOList);
-                return ResponseEntity.ok(response);
-            }
-            default:
-            {
-                response.setMessage("Invalid language " + lang);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-            }
+            caseList.forEach(i -> caseDTOList.add(new CaseDTO(i, lang)));
+            response.setMessage(lang);
+            response.setData(caseDTOList);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e)
+        {
+            response.setMessage(e.getMessage());
         }
+        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<ApiResponse<?>> deleteById(Long id)
@@ -131,7 +103,7 @@ public class CaseService
         try
         {
             caseRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(new ApiResponse<>("Succesfully deleted", null));
         } catch (Exception e)
         {
             throw new RuntimeException(e);
@@ -161,21 +133,21 @@ public class CaseService
                 newCase = objectMapper.readValue(caseJson, Case.class);
             }
 
-            if (!newMainPhoto.isEmpty()) //If not empty
+            if (newMainPhoto != null) //If not empty
                 newCase.setMainPhoto(photoService.save(newMainPhoto));
             else
                 newCase.setMainPhoto(oldMainPhoto);
 
-            if (!newGallery.isEmpty()) //If not empty
+            if (newGallery != null) //If not empty
             {
                 newCase.setGallery(new ArrayList<>());
 
                 for (MultipartFile multipartFile : newGallery)
                     newCase.getGallery().add(photoService.save(multipartFile));
-            }
-            else
+            } else
                 newCase.setGallery(oldGallery);
 
+            newCase.setId(id);
             Case save = caseRepository.save(newCase);
 
             response.setMessage("Updated");
@@ -184,7 +156,7 @@ public class CaseService
 
         } catch (JsonProcessingException e)
         {
-            response.setMessage("Error on parsing json " + e.getMessage());
+            response.setMessage("Error on parsing json ");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }

@@ -24,9 +24,9 @@ public class ServiceEntityService
     private final ServiceEntityRepository serviceRepo;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<ServiceEntityDTO>> create(String json, MultipartFile file)
+    public ResponseEntity<ApiResponse<ServiceEntity>> create(String json, MultipartFile file)
     {
-        ApiResponse<ServiceEntityDTO> apiResponse = new ApiResponse<>();
+        ApiResponse<ServiceEntity> apiResponse = new ApiResponse<>();
 
         if (!(file.getContentType().equals("image/png") ||
                 file.getContentType().equals("image/svg+xml")))
@@ -44,15 +44,14 @@ public class ServiceEntityService
             Photo icon = photoService.save(file);
             serviceEntity.setIcon(icon);
 
-            ServiceEntity save = serviceRepo.save(serviceEntity);
+            apiResponse.setData(serviceRepo.save(serviceEntity));
             apiResponse.setMessage("Successfully created");
-            apiResponse.setData(new ServiceEntityDTO(save));
 
             return ResponseEntity.ok(apiResponse);
 
         } catch (JsonProcessingException e)
         {
-            apiResponse.setMessage("Problem with processing json : "+e.getMessage());
+            apiResponse.setMessage("Problem with processing json : " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
 
@@ -66,25 +65,25 @@ public class ServiceEntityService
             response.setMessage("Service not found by id: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        response.setMessage("Successfully found");
-        serviceRepo.findById(id).ifPresent(serviceEntity -> response.setData(new ServiceEntityDTO(serviceEntity)));
+        response.setMessage(lang);
+        serviceRepo.findById(id).ifPresent(serviceEntity -> response.setData(new ServiceEntityDTO(serviceEntity, lang)));
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<ApiResponse<List<ServiceEntityDTO>>> findAll()
+    public ResponseEntity<ApiResponse<List<ServiceEntityDTO>>> findAll(String lang)
     {
         List<ServiceEntity> all = serviceRepo.findAll();
         ApiResponse<List<ServiceEntityDTO>> response = new ApiResponse<>();
         response.setMessage("Successfully found " + all.size() + " item(s)");
         response.setData(new ArrayList<>());
-        all.forEach(i -> response.getData().add(new ServiceEntityDTO(i)));
+        all.forEach(i -> response.getData().add(new ServiceEntityDTO(i, lang)));
         return ResponseEntity.ok(response);
     }
 
 
-    public ResponseEntity<ApiResponse<ServiceEntityDTO>> update(Long id, String json, MultipartFile file)
+    public ResponseEntity<ApiResponse<ServiceEntity>> update(Long id, String json, MultipartFile newIcon)
     {
-        ApiResponse<ServiceEntityDTO> apiResponse = new ApiResponse<>();
+        ApiResponse<ServiceEntity> apiResponse = new ApiResponse<>();
         if (!serviceRepo.existsById(id))
         {
             apiResponse.setMessage("Service not found by id: " + id);
@@ -92,24 +91,30 @@ public class ServiceEntityService
         }
         try
         {
-            ServiceEntity serviceEntity = serviceRepo.findById(id).get();
-            ObjectMapper objectMapper = new ObjectMapper();
+            ServiceEntity newServiceEntity = serviceRepo.findById(id).get();
+            Photo oldIcon = newServiceEntity.getIcon();
 
-            ServiceEntity newServiceEntity = objectMapper.readValue(json, ServiceEntity.class);
-            newServiceEntity.setIcon(photoService.save(file));
+            if (json != null)
+            {
+                ObjectMapper objectMapper = new ObjectMapper();
+                newServiceEntity = objectMapper.readValue(json, ServiceEntity.class);
+            }
+
+            if (!newIcon.isEmpty())   //If not empty
+                newServiceEntity.setIcon(photoService.save(newIcon));
+            else
+                newServiceEntity.setIcon(oldIcon);
+
             newServiceEntity.setId(id);
-            serviceRepo.save(newServiceEntity);
+            apiResponse.setData(serviceRepo.save(newServiceEntity));
             apiResponse.setMessage("Successfully updated");
-            apiResponse.setData(new ServiceEntityDTO(newServiceEntity));
 
             return ResponseEntity.ok(apiResponse);
-
         } catch (JsonProcessingException e)
         {
             throw new RuntimeException(e);
         }
     }
-
 
     public ResponseEntity<?> deleteById(Long id)
     {

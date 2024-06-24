@@ -5,39 +5,42 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.CaseEffect;
+import uz.resultme.entity.Plan;
 import uz.resultme.exception.LanguageNotSupportException;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CaseEffectDTO
+public class PlanDTO
 {
     Long id;
 
-    String value;
+    String name;
 
-    String effectDescription;
+    String text;
 
-    public CaseEffectDTO(CaseEffect entity, String lang)
+    public PlanDTO(Plan entity, String lang)
     {
         this.id = entity.getId();
-        this.value = entity.getValue();
-        switch (lang)
+        switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.effectDescription = entity.getEffectDescriptionUz();
+                this.name = entity.getNameUz();
+                this.text = entity.getTextUz();
                 break;
             }
             case "ru":
             {
-                this.effectDescription = entity.getEffectDescriptionRu();
+                this.name = entity.getNameRU();
+                this.text = entity.getTextRu();
                 break;
             }
             default:
+            {
                 throw new LanguageNotSupportException("Language not supported: " + lang);
+            }
         }
     }
 }

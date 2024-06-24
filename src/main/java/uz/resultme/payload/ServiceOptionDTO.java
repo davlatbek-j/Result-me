@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.resultme.entity.ServiceOption;
+import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.List;
 
@@ -16,32 +17,31 @@ public class ServiceOptionDTO
 {
     Long id;
 
-    String nameUz;
+    String name;
 
-    String nameRu;
-
-    List<String> valueUz;
-
-    List<String> valueRu;
+    List<String> value;
 
     public ServiceOptionDTO(ServiceOption entity , String lang)
     {
         this.id = entity.getId();
-        switch (lang)
+        switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.nameUz = entity.getNameUz();
-                this.valueUz = entity.getValueUz();
+                this.name = entity.getNameUz();
+                this.value = entity.getValueUz();
                 break;
             }
             case "ru":
             {
-                this.nameRu = entity.getNameRu();
-                this.valueRu = entity.getValueRu();
+                this.name = entity.getNameRu();
+                this.value = entity.getValueRu();
                 break;
             }
-
+            default:
+            {
+                throw new LanguageNotSupportException("Language not supported: " + lang);
+            }
         }
 
     }

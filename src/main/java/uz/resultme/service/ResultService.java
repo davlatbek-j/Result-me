@@ -37,19 +37,15 @@ public class ResultService
         List<ProvidedResultDTO> dtoList = new ArrayList<>();
         ApiResponse<List<ProvidedResultDTO>> response = new ApiResponse<>();
 
-        switch (lang)
+        response.setMessage(lang);
+        try
         {
-            case "uz":
-            {
-                response.setMessage("uz");
-                allEntity.forEach(i -> dtoList.add(new ProvidedResultDTO(i, "uz")));
-            }
-            case "ru":
-            {
-                response.setMessage("ru");
-                allEntity.forEach(i -> dtoList.add(new ProvidedResultDTO(i, "ru")));
-            }
+            allEntity.forEach(i -> dtoList.add(new ProvidedResultDTO(i, lang)));
+        } catch (IllegalArgumentException e)
+        {
+            response.setMessage(e.getMessage());
         }
+
         response.setData(dtoList);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -89,27 +85,17 @@ public class ResultService
             response.setMessage("Not Found by id:" + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        ProvidedResult entity = resultRepo.findById(id).get();
+         ProvidedResult entity = resultRepo.findById(id).get();
 
-        switch (lang)
+        try
         {
-            case "uz":
-            {
-                response.setMessage("uz");
-                response.setData(new ProvidedResultDTO(entity, "uz"));
-                break;
-            }
-            case "ru":
-            {
-                response.setMessage("ru");
-                response.setData(new ProvidedResultDTO(entity, "ru"));
-                break;
-            }
-            default:
-            {
-                throw new RuntimeException("Invalid language " + lang);
-            }
+            response.setMessage(lang);
+            response.setData(new ProvidedResultDTO(entity, lang));
+        } catch (IllegalArgumentException e)
+        {
+            response.setMessage(e.getMessage());
         }
+
         return ResponseEntity.ok(response);
     }
 }
