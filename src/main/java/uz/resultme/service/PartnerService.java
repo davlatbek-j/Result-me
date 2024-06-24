@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Partner;
 import uz.resultme.entity.Photo;
+import uz.resultme.exception.IllegalPhotoTypeException;
 import uz.resultme.payload.PartnerDTO;
 import uz.resultme.repository.PartnerRepository;
 
@@ -20,7 +21,8 @@ public class PartnerService {
         if (file.getContentType() == null ||
                 !file.getContentType().equals("image/png")||!file.getContentType().equals("image/svg"))
         {
-            throw new RuntimeException("Unsupported content type: " + file.getContentType());
+            throw new IllegalPhotoTypeException("Unsupported image type: " + file.getContentType());
+
         }
 
         Photo photo = photoService.save(file);

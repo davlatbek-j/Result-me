@@ -25,5 +25,4 @@ public class PartnerController {
         return partnerService.addPartner(file);
     }
 
-
 }
