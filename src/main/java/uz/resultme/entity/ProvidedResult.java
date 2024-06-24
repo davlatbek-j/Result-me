@@ -1,9 +1,6 @@
 package uz.resultme.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,11 +19,14 @@ public class ProvidedResult
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String name;
+    String title;
 
     String descriptionUz;
 
     String descriptionRu;
 
     Boolean active;
+
+//    @Column(unique = true)
+    Integer orderNum;
 }

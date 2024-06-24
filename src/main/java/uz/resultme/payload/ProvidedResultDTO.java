@@ -15,17 +15,20 @@ public class ProvidedResultDTO
 {
     Long id;
 
-    String name;
+    String title;
 
     String description;
 
     Boolean active;
 
+    Integer orderNum;
+
     public ProvidedResultDTO(ProvidedResult entity,String lang)
     {
         this.id = entity.getId();
-        this.name = entity.getName();
+        this.title = entity.getTitle();
         this.active = entity.getActive();
+        this.orderNum = entity.getOrderNum();
         switch (lang.toLowerCase())
         {
             case "uz":
