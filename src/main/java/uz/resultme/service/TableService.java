@@ -34,6 +34,6 @@ public class TableService
                 "http://localhost:9000/sheets/data?sheet-id=" + sheetId+"&range=" + sheetName + "!A:Z");
 
         tableRepo.save(myTable);
-
+        return null;
     }
 }
