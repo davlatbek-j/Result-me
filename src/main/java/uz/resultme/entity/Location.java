@@ -1,5 +1,6 @@
 package uz.resultme.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,27 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ServiceOption
+public class Location
 {
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
+    String url;
 
-    String nameRu;
-
-    @ElementCollection
-    List<String> valueUz;
-
-    @ElementCollection
-    List<String> valueRu;
+    Boolean active;
 }

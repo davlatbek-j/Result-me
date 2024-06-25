@@ -1,11 +1,11 @@
-package uz.resultme.payload;
+package uz.resultme.payload.cases;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.CaseEffect;
+import uz.resultme.entity.cases.CaseEffect;
 import uz.resultme.exception.LanguageNotSupportException;
 
 @Data

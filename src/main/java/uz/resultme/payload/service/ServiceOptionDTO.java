@@ -1,11 +1,10 @@
-package uz.resultme.payload;
+package uz.resultme.payload.service;
 
-import jakarta.persistence.ElementCollection;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.ServiceOption;
+import uz.resultme.entity.service.ServiceOption;
 import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.List;

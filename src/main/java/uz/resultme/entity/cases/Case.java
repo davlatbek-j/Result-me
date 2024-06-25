@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.cases;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import uz.resultme.entity.Photo;
 
 import java.util.List;
 

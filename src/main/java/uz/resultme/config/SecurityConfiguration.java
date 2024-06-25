@@ -42,6 +42,7 @@ public class SecurityConfiguration
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/sheets/**").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/article/get/**", "/article/get-all").permitAll()
                         .requestMatchers("/case/get/**", "/case/get-all").permitAll()

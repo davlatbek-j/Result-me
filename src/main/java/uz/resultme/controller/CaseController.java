@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.Case;
+import uz.resultme.entity.cases.Case;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.CaseDTO;
+import uz.resultme.payload.cases.CaseDTO;
 import uz.resultme.service.CaseService;
 import uz.resultme.service.ServiceEntityService;
 

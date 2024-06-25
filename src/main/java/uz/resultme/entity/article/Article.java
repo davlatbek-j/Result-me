@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.article;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import uz.resultme.entity.Photo;
 
 import java.util.List;
 

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.AuthResponse;
 import uz.resultme.payload.SignIn;
 import uz.resultme.repository.UserRepository;
 import uz.resultme.security.JwtTokenService;
@@ -21,7 +20,7 @@ public class AuthService
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService tokenService;
 
-    public ResponseEntity<ApiResponse<AuthResponse>> login(SignIn signIn)
+    public ResponseEntity<ApiResponse<?>> login(SignIn signIn)
     {
         User byLogin = userRepository.findByUsername(signIn.getUsername());
         ApiResponse<AuthResponse> response = new ApiResponse<>();
@@ -30,7 +29,7 @@ public class AuthService
             if (passwordEncoder.matches(signIn.getPassword(), byLogin.getPassword()))
             {
                 response.setMessage("Login successful");
-                response.setData( new AuthResponse(tokenService.generateToken(signIn.getUsername())));
+                response.setData(new AuthResponse(tokenService.generateToken(signIn.getUsername())));
                 return ResponseEntity.ok(response);
             }
         }
@@ -38,4 +37,18 @@ public class AuthService
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
+}
+
+class AuthResponse
+{
+    private String token;
+
+    public AuthResponse()
+    {
+    }
+
+    public AuthResponse(String token)
+    {
+        this.token = token;
+    }
 }

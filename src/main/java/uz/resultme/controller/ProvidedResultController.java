@@ -40,7 +40,7 @@ public class ProvidedResultController
         return resultService.getAll(lang);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<ProvidedResult>> update(@PathVariable Long id, @RequestBody ProvidedResult providedResult)
     {
         return resultService.update(id,providedResult);

@@ -3,25 +3,24 @@ package uz.resultme.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import uz.resultme.entity.service.MyTable;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.SignIn;
-import uz.resultme.service.AuthService;
+import uz.resultme.service.TableService;
 
 @RequiredArgsConstructor
 
-@RequestMapping("/auth")
 @Controller
-public class AuthController
+@RequestMapping("/table")
+public class TableController
 {
-    private final AuthService authService;
+    private final TableService tableService;
 
-    @PostMapping("/login")
-    public ResponseEntity<ApiResponse<?>> login(@RequestBody SignIn signIn)
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<MyTable>> createTable(@RequestBody MyTable myTable)
     {
-        return authService.login(signIn);
+        return tableService.create(myTable);
     }
 }

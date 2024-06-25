@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.Article;
+import uz.resultme.entity.article.Article;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.ArticleDTO;
+import uz.resultme.payload.article.ArticleDTO;
 import uz.resultme.service.ArticleService;
 
 import java.util.List;

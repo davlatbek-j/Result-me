@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.Case;
+import uz.resultme.entity.cases.Case;
 import uz.resultme.entity.Photo;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.CaseDTO;
+import uz.resultme.payload.cases.CaseDTO;
 import uz.resultme.repository.CaseRepository;
 
 import java.util.ArrayList;

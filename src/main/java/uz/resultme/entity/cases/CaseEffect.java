@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.cases;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -7,27 +7,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class CaseResult
+public class CaseEffect
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String titleUz;
+    String value;
 
-    String titleRu;
+    String effectDescriptionUz;
 
-    @ElementCollection
-    List<String> valueUz;
-
-    @ElementCollection
-    List<String> valueRu;
+    String effectDescriptionRu;
 }

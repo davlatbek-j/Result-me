@@ -1,30 +1,33 @@
-package uz.resultme.entity;
+package uz.resultme.entity.cases;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class Plan
+public class CaseResult
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
+    String titleUz;
 
-    String nameRu;
+    String titleRu;
 
-    @Column(length = 1000)
-    String textUz;
+    @ElementCollection
+    List<String> valueUz;
 
-    @Column(length = 1000)
-    String textRu;
+    @ElementCollection
+    List<String> valueRu;
 }

@@ -1,13 +1,13 @@
-package uz.resultme.payload;
+package uz.resultme.payload.service;
 
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.ServiceEntity;
-import uz.resultme.entity.ServiceOption;
+import uz.resultme.entity.service.ServiceEntity;
 import uz.resultme.exception.LanguageNotSupportException;
+import uz.resultme.payload.PhotoDTO;
 
 import java.util.ArrayList;
 import java.util.List;

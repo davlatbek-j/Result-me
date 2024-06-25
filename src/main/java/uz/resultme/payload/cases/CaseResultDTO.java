@@ -1,15 +1,11 @@
-package uz.resultme.payload;
+package uz.resultme.payload.cases;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.CaseResult;
+import uz.resultme.entity.cases.CaseResult;
 import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.List;

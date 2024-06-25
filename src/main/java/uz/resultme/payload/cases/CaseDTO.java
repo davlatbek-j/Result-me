@@ -1,18 +1,13 @@
-package uz.resultme.payload;
+package uz.resultme.payload.cases;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import uz.resultme.entity.Case;
+import uz.resultme.entity.cases.Case;
 import uz.resultme.exception.LanguageNotSupportException;
+import uz.resultme.payload.PhotoDTO;
 
 import java.util.ArrayList;
 import java.util.List;

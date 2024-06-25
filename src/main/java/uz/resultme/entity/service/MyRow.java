@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import uz.resultme.entity.Photo;
 
 import java.util.List;
 
@@ -15,21 +16,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ServiceEntity
+public class MyRow
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
-
-    String nameRu;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    List<ServiceOption> option;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    Photo icon;
-
-    Boolean active;
+    @ElementCollection
+    List<String> values;
 }

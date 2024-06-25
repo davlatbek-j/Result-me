@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import uz.resultme.entity.Photo;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,15 +16,20 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class CaseEffect
+public class MyTable
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY )
     Long id;
 
-    String value;
+    String name;
 
-    String effectDescriptionUz;
+    int x;
 
-    String effectDescriptionRu;
+    int y;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<MyRow> row;
 }
+
+
