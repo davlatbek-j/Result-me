@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/main/resources/photo
+!**/src/main/resources/credentials.json
 !**/src/test/**/target/
 
 ### STS ###
