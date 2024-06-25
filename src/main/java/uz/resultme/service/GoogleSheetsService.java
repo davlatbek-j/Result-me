@@ -58,36 +58,44 @@ public class GoogleSheetsService
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public ResponseEntity<ApiResponse<RowsWrapper>> getSpreadsheetDataAsJson(String spreadsheetId, String range) throws GeneralSecurityException, IOException
+    public ResponseEntity<ApiResponse<RowsWrapper>> getSpreadsheetDataAsJson(String spreadsheetId, String range)
     {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-
-        ValueRange response = service.spreadsheets().values()
-                .get(spreadsheetId, range)
-                .execute();
-        List<List<Object>> values = response.getValues();
-
         ApiResponse<RowsWrapper> apiResponse = new ApiResponse<>();
-        if (values == null || values.isEmpty())
+        try
         {
-            apiResponse.setMessage("Empty spreadsheet");
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+
+            ValueRange response = service.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            List<List<Object>> values = response.getValues();
+
+            if (values == null || values.isEmpty())
+            {
+                apiResponse.setMessage("Empty spreadsheet");
+                apiResponse.setData(null);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(apiResponse);
+            }
+
+            List<Row> rows = values.stream()
+                    .map(row -> new Row(row.stream().map(Object::toString).collect(Collectors.toList())))
+                    .collect(Collectors.toList());
+
+            RowsWrapper rowsWrapper = new RowsWrapper(rows);
+
+            apiResponse.setMessage("Successfully retrieved data");
+            apiResponse.setData(rowsWrapper);
+            return ResponseEntity.ok(apiResponse);
+        } catch (GeneralSecurityException | IOException e)
+        {
+            e.printStackTrace();
+            apiResponse.setMessage(e.getMessage());
             apiResponse.setData(null);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(apiResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
         }
-
-        List<Row> rows = values.stream()
-                .map(row -> new Row(row.stream().map(Object::toString).collect(Collectors.toList())))
-                .collect(Collectors.toList());
-
-        RowsWrapper rowsWrapper = new RowsWrapper(rows);
-
-        apiResponse.setMessage("Successfully retrieved data");
-        apiResponse.setData(rowsWrapper);
-        return ResponseEntity.ok(apiResponse);
-
     }
 
 }

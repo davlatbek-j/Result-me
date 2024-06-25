@@ -1,47 +1,39 @@
 package uz.resultme.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.resultme.entity.service.MyRow;
-import uz.resultme.entity.service.MyTable;
-import uz.resultme.exception.IllegalTableArgumentException;
+import uz.resultme.entity.MyTable;
+import uz.resultme.entity.service.ServiceEntity;
 import uz.resultme.payload.ApiResponse;
+import uz.resultme.repository.ServiceEntityRepository;
 import uz.resultme.repository.TableRepository;
 
 @RequiredArgsConstructor
-
 @Service
 public class TableService
 {
     private final TableRepository tableRepo;
+    private final ServiceEntityRepository serviceEntityRepository;
 
-    public ResponseEntity<ApiResponse<MyTable>> create(MyTable myTable)
+    public ResponseEntity<ApiResponse<MyTable>> create(Long serviceId, String sheetId, String sheetName)
     {
-        validateTable(myTable);
-
         ApiResponse<MyTable> response = new ApiResponse<>();
-        MyTable save = tableRepo.save(myTable);
-        response.setMessage("Successfully created");
-        response.setData(save);
-        return ResponseEntity.ok(response);
-    }
-
-    private void validateTable(MyTable myTable)
-    {
-        if (myTable == null)
-            throw new NullPointerException("Table is null");
-
-        if (myTable.getRow().size() != myTable.getY())
+        if (!serviceEntityRepository.existsById(serviceId))
         {
-            throw new IllegalTableArgumentException("Expected rows number: "+myTable.getY()+
-                    "Actual rows number: "+myTable.getRow().toArray().length);
+            response.setMessage("Service not found id: " + serviceId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+        ServiceEntity serviceEntity = serviceEntityRepository.findById(serviceId).get();
 
-        for (MyRow myRow : myTable.getRow())
-        {
-//            if (myRow.getValues().size())
-        }
+        MyTable myTable = new MyTable();
+        myTable.setSheetId(sheetId);
+        myTable.setRange(sheetName+"!A:Z");
+        myTable.setHttpUrl(
+                "http://localhost:9000/sheets/data?sheet-id=" + sheetId+"&range=" + sheetName + "!A:Z");
+
+        tableRepo.save(myTable);
 
     }
 }

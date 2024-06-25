@@ -1,14 +1,15 @@
-package uz.resultme.entity.service;
+package uz.resultme.entity;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.Photo;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,12 +17,15 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class MyRow
+public class MyTable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ElementCollection
-    List<String> values;
+    String range;
+
+    String sheetId;
+
+    String httpUrl;
 }

@@ -5,4 +5,5 @@ import uz.resultme.entity.service.ServiceEntity;
 
 public interface ServiceEntityRepository extends JpaRepository<ServiceEntity,Long>
 {
+
 }

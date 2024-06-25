@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uz.resultme.entity.service.MyTable;
+import org.springframework.web.bind.annotation.RequestParam;
+import uz.resultme.entity.MyTable;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.service.TableService;
 
@@ -19,8 +19,13 @@ public class TableController
     private final TableService tableService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<MyTable>> createTable(@RequestBody MyTable myTable)
+    public ResponseEntity<ApiResponse<MyTable>> createTable(
+            @RequestParam("service-id") Long serviceId,
+            @RequestParam("service-lang") String lang,
+            @RequestParam(name = "spreadsheet-id") String sheetId,
+            @RequestParam(name = "sheet-name") String sheetName)
     {
-        return tableService.create(myTable);
+        return tableService.create(serviceId,sheetId,sheetName);
     }
+
 }
