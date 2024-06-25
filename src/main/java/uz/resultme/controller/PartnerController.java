@@ -43,8 +43,8 @@ public class PartnerController {
         return partnerService.getAllPartners();
     }
 
-    @GetMapping("/{url}")
+    /*@GetMapping("/{url}")
     public Partner getPartnerByUrl(@PathVariable String url){
         return partnerService.getPartnerByUrl(url);
-    }
+    }*/
 }

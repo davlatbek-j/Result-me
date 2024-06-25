@@ -64,7 +64,7 @@ public class PartnerService {
 
 
 
-        
+
     }
 
     public ResponseEntity<?> deleteById(Long id)
@@ -87,4 +87,4 @@ public class PartnerService {
 
 
     }
-}
+
