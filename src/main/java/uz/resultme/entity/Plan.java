@@ -1,32 +1,30 @@
 package uz.resultme.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ProvidedResult
+public class Plan
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String title;
+    String nameUz;
 
-    String descriptionUz;
+    String nameRu;
 
-    String descriptionRu;
+    @Column(length = 1000)
+    String textUz;
 
-    Boolean active;
-
-//    @Column(unique = true)
-    Integer orderNum;
+    @Column(length = 1000)
+    String textRu;
 }

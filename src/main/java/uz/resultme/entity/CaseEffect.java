@@ -13,20 +13,15 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ProvidedResult
+public class CaseEffect
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String title;
+    String value;
 
-    String descriptionUz;
+    String effectDescriptionUz;
 
-    String descriptionRu;
-
-    Boolean active;
-
-//    @Column(unique = true)
-    Integer orderNum;
+    String effectDescriptionRu;
 }

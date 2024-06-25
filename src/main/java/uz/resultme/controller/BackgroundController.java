@@ -17,7 +17,7 @@ public class BackgroundController
     private final BackgroundService backgroundService;
 
     @PostMapping("/create")
-    public ResponseEntity<BackgroundDTO> create(@RequestParam(name = "photo") MultipartFile file)
+    public ResponseEntity<BackgroundDTO> create(@RequestPart(name = "photo") MultipartFile file)
     {
         return backgroundService.create(file);
     }
