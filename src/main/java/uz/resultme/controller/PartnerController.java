@@ -27,23 +27,16 @@ public class PartnerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Partner> updatePartner(@PathVariable Long id, @RequestBody Partner partnerDetails) {
-        try {
-            Partner updatedPartner = partnerService.updatePartner(id, partnerDetails);
-            return ResponseEntity.ok(updatedPartner);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ApiResponse<PartnerDTO>> updatePartner(@PathVariable Long id,
+                                                 @RequestParam(name = "@photo") MultipartFile file
+                                                 ,@RequestParam(name = "url") String url) {
+        return partnerService.updatePartner(id,file,url);
+
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
-        try {
-            partnerService.deletePartner(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deletePartner(@PathVariable Long id) {
+       return partnerService.deleteById(id);
     }
     @GetMapping
     public List<Partner> getAllPartners() {

@@ -1,59 +1,46 @@
 package uz.resultme.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.resultme.entity.Contact;
-import uz.resultme.repository.ContactRepository;
+import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.ContactDto;
+import uz.resultme.service.ContactService;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/contacts")
 public class ContactController {
-    @Autowired
-    private ContactRepository contactRepository;
+
+    private final ContactService contactService;
 
     @GetMapping
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
+    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts() {
+        return contactService.getAllContact();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Contact> getContactById(@PathVariable Long id) {
-        Optional<Contact> contact = contactRepository.findById(id);
-        return contact.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponse<ContactDto>> getContactById(@PathVariable Long id) {
+        return contactService.findById(id);
     }
-
+/*
     @PostMapping
-    public Contact createContact(@RequestBody Contact contact) {
+   // public Contact createContact(@RequestBody Contact contact) {
         return contactRepository.save(contact);
-    }
+    }*/
 
-    @PutMapping("/{id}")
+  /*  @PutMapping("/{id}")
     public ResponseEntity<Contact> updateContact(@PathVariable Long id, @RequestBody Contact contactDetails) {
-        Optional<Contact> contact = contactRepository.findById(id);
-        if (contact.isPresent()) {
-            Contact updatedContact = contact.get();
-            updatedContact.setInstagram(contactDetails.getInstagram());
-            updatedContact.setTelegram(contactDetails.getTelegram());
-            updatedContact.setFacebook(contactDetails.getFacebook());
-            return ResponseEntity.ok(contactRepository.save(updatedContact));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
-        Optional<Contact> contact = contactRepository.findById(id);
-        if (contact.isPresent()) {
-            contactRepository.delete(contact.get());
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    }*/
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteContact(@PathVariable Long id) {
+       return contactService.deleteById(id);
     }
 
 }
