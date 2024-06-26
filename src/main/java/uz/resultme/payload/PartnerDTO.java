@@ -16,6 +16,7 @@ import uz.resultme.entity.Photo;
 public class PartnerDTO {
     Long id;
     PhotoDTO photo;
+    String partnerUrl;
 
     public PartnerDTO(Partner entity)
     {
