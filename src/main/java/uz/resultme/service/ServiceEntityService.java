@@ -11,6 +11,7 @@ import uz.resultme.entity.Photo;
 import uz.resultme.entity.service.ServiceEntity;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.service.ServiceEntityDTO;
+import uz.resultme.repository.TableRepository;
 import uz.resultme.repository.service.ServiceEntityRepository;
 import uz.resultme.repository.service.ServiceOptionRepository;
 
@@ -25,6 +26,7 @@ public class ServiceEntityService
     private final ServiceEntityRepository serviceRepo;
     private final PhotoService photoService;
     private final ServiceOptionRepository serviceOptionRepo;
+    private final TableRepository tableRepo;
 
     public ResponseEntity<ApiResponse<ServiceEntity>> create(String json, MultipartFile file)
     {
@@ -139,6 +141,14 @@ public class ServiceEntityService
             response.setMessage("Service option not found by option-id: " + optionId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        serviceOptionRepo.deleteById(optionId);
+        String tableUrlRu = serviceOptionRepo.findById(optionId).get().getTableUrlRu();
+        String tableUrlUz = serviceOptionRepo.findById(optionId).get().getTableUrlUz();
+
+        tableRepo.deleteByHttpUrl(tableUrlUz);
+        tableRepo.deleteByHttpUrl(tableUrlRu);
+
+        serviceOptionRepo.clearTableUrlsById(optionId);
+        response.setMessage("Successfully deleted");
+        return ResponseEntity.ok(response);
     }
 }

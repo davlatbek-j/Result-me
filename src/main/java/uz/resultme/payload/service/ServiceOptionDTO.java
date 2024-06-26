@@ -20,11 +20,9 @@ public class ServiceOptionDTO
 
     List<String> value;
 
-    String tableUrlUz;
+    String tableUrl;
 
-    String tableUrlRu;
-
-    public ServiceOptionDTO(ServiceOption entity , String lang)
+    public ServiceOptionDTO(ServiceOption entity, String lang)
     {
         this.id = entity.getId();
         switch (lang.toLowerCase())
@@ -33,14 +31,14 @@ public class ServiceOptionDTO
             {
                 this.name = entity.getNameUz();
                 this.value = entity.getValueUz();
-                this.tableUrlUz = entity.getTableUrlUz();
+                this.tableUrl = entity.getTableUrlUz();
                 break;
             }
             case "ru":
             {
                 this.name = entity.getNameRu();
                 this.value = entity.getValueRu();
-                this.tableUrlRu = entity.getTableUrlRu();
+                this.tableUrl = entity.getTableUrlRu();
                 break;
             }
             default:
