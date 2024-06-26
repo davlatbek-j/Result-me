@@ -15,10 +15,12 @@ public class BackgroundDTO
 {
     Long id;
     PhotoDTO photo;
+    Boolean active;
 
     public BackgroundDTO(Background entity)
     {
         this.id = entity.getId();
         this.photo = new PhotoDTO(entity.getPhoto());
+        this.active=entity.getActive();
     }
 }

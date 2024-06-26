@@ -21,6 +21,8 @@ public class Background
     @OneToOne(cascade = CascadeType.ALL)
     Photo photo;
 
+    Boolean active;
+
     public Background(Photo photo)
     {
         this.photo = photo;
