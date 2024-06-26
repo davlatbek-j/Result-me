@@ -26,7 +26,4 @@ public class ProvidedResult
     String descriptionRu;
 
     Boolean active;
-
-//    @Column(unique = true)
-    Integer orderNum;
 }

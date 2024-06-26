@@ -35,8 +35,4 @@ public class ServiceEntity
     Photo icon;
 
     Boolean active;
-
-    String tableUrlUz;
-
-    String tableUrlRu;
 }

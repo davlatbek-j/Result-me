@@ -28,4 +28,7 @@ public class MyTable
     String sheetId;
 
     String httpUrl;
+
+    String lang;
+
 }

@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/main/resources/photo
 !**/src/main/resources/credentials.json
+D:\New\Result-me\tokens\StoredCredential
 !**/src/test/**/target/
 
 ### STS ###

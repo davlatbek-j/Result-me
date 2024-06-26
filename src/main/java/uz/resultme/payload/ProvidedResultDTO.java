@@ -21,14 +21,12 @@ public class ProvidedResultDTO
 
     Boolean active;
 
-    Integer orderNum;
 
     public ProvidedResultDTO(ProvidedResult entity,String lang)
     {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.active = entity.getActive();
-        this.orderNum = entity.getOrderNum();
         switch (lang.toLowerCase())
         {
             case "uz":

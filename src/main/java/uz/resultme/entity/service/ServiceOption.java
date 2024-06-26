@@ -30,4 +30,8 @@ public class ServiceOption
 
     @ElementCollection
     List<String> valueRu;
+
+    String tableUrlUz;
+
+    String tableUrlRu;
 }
