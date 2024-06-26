@@ -23,6 +23,7 @@ public class ResultService
 
     public ResponseEntity<ApiResponse<ProvidedResult>> save(ProvidedResult providedResult)
     {
+        providedResult.setId(null);
         ProvidedResult save = resultRepo.save(providedResult);
         ApiResponse<ProvidedResult> response = new ApiResponse<>();
         response.setMessage("Successfully created");

@@ -32,6 +32,7 @@ public class ArticleService
         try
         {
             Article article = objectMapper.readValue(jsonArticle, Article.class);
+            article.setId(null);
 
             Photo main = photoService.save(mainPhoto);
             article.setMainPhoto(main);

@@ -17,6 +17,7 @@ public class LocationService
 
     public ResponseEntity<ApiResponse<Location>> create(Location location)
     {
+        location.setId(null);
         ApiResponse<Location> response = new ApiResponse<>();
         try
         {

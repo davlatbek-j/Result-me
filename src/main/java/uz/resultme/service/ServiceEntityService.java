@@ -44,6 +44,7 @@ public class ServiceEntityService
         try
         {
             ServiceEntity serviceEntity = objectMapper.readValue(json, ServiceEntity.class);
+            serviceEntity.setId(null);
 
             Photo icon = photoService.save(file);
             serviceEntity.setIcon(icon);

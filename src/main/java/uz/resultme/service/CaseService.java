@@ -33,6 +33,7 @@ public class CaseService
             ObjectMapper objectMapper = new ObjectMapper();
 
             Case aCase = objectMapper.readValue(caseJson, Case.class);
+            aCase.setId(null);
 
             aCase.setMainPhoto(photoService.save(mainPhoto));
 
