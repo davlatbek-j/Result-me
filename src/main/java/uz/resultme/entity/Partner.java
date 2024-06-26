@@ -22,5 +22,7 @@ public class Partner {
     Photo photo;
     String partnerUrl;
 
-    public Partner(Photo photo){this.photo = photo;}
+    public Partner(Photo photo,String url){
+        this.photo = photo;
+    this.partnerUrl=url;}
 }

@@ -9,7 +9,6 @@ import uz.resultme.entity.Partner;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.PartnerDTO;
 import uz.resultme.service.PartnerService;
-import uz.resultme.service.PhotoService;
 
 import java.util.List;
 
@@ -21,37 +20,30 @@ public class PartnerController {
     private final PartnerService partnerService;
 
     @PostMapping("/add")
-    ResponseEntity<PartnerDTO> addPartner(@RequestParam(name = "photo") MultipartFile file){
+    ResponseEntity<PartnerDTO> addPartner(@RequestParam(name = "photo") MultipartFile file ,@RequestParam(name = "url") String url){
 
-        return partnerService.addPartner(file);
+        return partnerService.addPartner(file,url);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Partner> updatePartner(@PathVariable Long id, @RequestBody Partner partnerDetails) {
-        try {
-            Partner updatedPartner = partnerService.updatePartner(id, partnerDetails);
-            return ResponseEntity.ok(updatedPartner);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ApiResponse<Partner>> updatePartner(@PathVariable Long id,
+                                                                @RequestParam(name = "@photo") MultipartFile file
+                                                 , @RequestParam(name = "url") String url) {
+        return partnerService.updatePartner(id,file,url);
+
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
-        try {
-            partnerService.deletePartner(id);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deletePartner(@PathVariable Long id) {
+       return partnerService.delete(id);
     }
     @GetMapping
-    public List<Partner> getAllPartners() {
-        return partnerService.getAllPartners();
+    public ResponseEntity<ApiResponse<List<PartnerDTO>>> getAllPartners() {
+        return partnerService.findAll();
     }
 
     @GetMapping("/{url}")
-    public Partner getPartnerByUrl(@PathVariable String url){
-        return partnerService.getPartnerByUrl(url);
+    public ResponseEntity<ApiResponse<PartnerDTO>> getPartnerByUrl(@PathVariable String url){
+        return partnerService.getByUrl(url);
     }
 }
