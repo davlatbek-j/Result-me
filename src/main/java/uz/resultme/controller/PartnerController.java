@@ -21,7 +21,7 @@ public class PartnerController
     private final PartnerService partnerService;
 
     @PostMapping("/create")
-    ResponseEntity<PartnerDTO> addPartner(
+    ResponseEntity<ApiResponse<PartnerDTO>> addPartner(
             @RequestParam(name = "photo") MultipartFile file,
             @RequestParam(name = "url") String url)
     {
