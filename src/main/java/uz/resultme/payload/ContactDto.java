@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ContactDto {
     Long id;
-    Integer orderNum;
     String instagram;
     String telegram;
     String facebook;
@@ -25,7 +24,6 @@ public class ContactDto {
 
     public ContactDto(Contact contact){
         this.id=contact.getId();
-        this.orderNum=contact.getOrderNum();
         this.facebook=contact.getFacebook();
         this.instagram=contact.getInstagram();
         this.telegram=contact.getTelegram();
