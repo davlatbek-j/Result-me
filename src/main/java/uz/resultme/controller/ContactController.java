@@ -23,19 +23,27 @@ public class ContactController
         return contactService.create(contact);
     }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts(
-            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
-    {
-        return contactService.getAllContact(lang);
-    }
-
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ContactDto>> getContactById(
             @PathVariable Long id,
             @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return contactService.findById(id, lang);
+    }
+
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Contact>> getContactById(
+            @PathVariable Long id)
+    {
+        return contactService.findById(id);
+    }
+
+
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts(
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
+    {
+        return contactService.getAllContact(lang);
     }
 
     @PutMapping("/update/{id}")

@@ -7,24 +7,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ServiceOption
+public class OptionValue
 {
     @Id
-    @GeneratedValue(strategy =GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String nameUz;
 
     String nameRu;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<OptionValue> optionValue;
+    String tableUrlUz;
+
+    String tableUrlRu;
 }
+

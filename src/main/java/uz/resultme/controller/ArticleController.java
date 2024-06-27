@@ -32,26 +32,32 @@ public class ArticleController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ArticleDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return articleService.getById(id, lang);
     }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return articleService.findAll(lang);
+    }
+
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Article>> findWithLanguage(@PathVariable Long id)
+    {
+        return articleService.getById(id);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Article>> update(
             @PathVariable Long id,
-            @RequestParam(name = "json",required = false)String json,
-            @RequestPart(name = "main-photo",required = false)MultipartFile mainPhoto,
-            @RequestPart(name = "gallery",required = false) List<MultipartFile> gallery)
+            @RequestParam(name = "json", required = false) String json,
+            @RequestPart(name = "main-photo", required = false) MultipartFile mainPhoto,
+            @RequestPart(name = "gallery", required = false) List<MultipartFile> gallery)
     {
-        return articleService.update(id,json,mainPhoto,gallery);
+        return articleService.update(id, json, mainPhoto, gallery);
     }
 
     @DeleteMapping("/delete/{id}")

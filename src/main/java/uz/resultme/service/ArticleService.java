@@ -22,7 +22,7 @@ import java.util.List;
 public class ArticleService
 {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleRepository articleRepo;
     private final PhotoService photoService;
 
     public ResponseEntity<ApiResponse<Article>> create(String jsonArticle, MultipartFile mainPhoto, List<MultipartFile> gallery)
@@ -41,7 +41,7 @@ public class ArticleService
             for (MultipartFile multipartFile : gallery)
                 article.getGallery().add(photoService.save(multipartFile));
 
-            Article saved = articleRepository.save(article);
+            Article saved = articleRepo.save(article);
             response.setMessage("Successfully created");
             response.setData(saved);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -56,22 +56,37 @@ public class ArticleService
     public ResponseEntity<ApiResponse<ArticleDTO>> getById(Long id, String lang)
     {
         ApiResponse<ArticleDTO> response = new ApiResponse<>();
-        if (!articleRepository.existsById(id))
+        if (!articleRepo.existsById(id))
         {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepo.findById(id).get();
         response.setMessage("Found article with id " + id);
 
         response.setData(new ArticleDTO(article, lang));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    public ResponseEntity<ApiResponse<Article>> getById(Long id)
+    {
+        ApiResponse<Article> response = new ApiResponse<>();
+        if (!articleRepo.existsById(id))
+        {
+            response.setMessage("Article with id " + id + " does not exist");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        Article article = articleRepo.findById(id).get();
+        response.setMessage("Found article with id " + id);
+        response.setData(article);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(String lang)
     {
         ApiResponse<List<ArticleDTO>> response = new ApiResponse<>();
-        List<Article> articles = articleRepository.findAll();
+        List<Article> articles = articleRepo.findAll();
         response.setMessage("Found " + articles.size() + " article(s)");
         response.setData(new ArrayList<>());
         articles.forEach(i -> response.getData().add(new ArticleDTO(i, lang)));
@@ -82,7 +97,7 @@ public class ArticleService
     public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, List<MultipartFile> newGallery)
     {
         ApiResponse<Article> response = new ApiResponse<>();
-        if (!articleRepository.existsById(id))
+        if (!articleRepo.existsById(id))
         {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -90,7 +105,7 @@ public class ArticleService
 
         try
         {
-            Article newArticle = articleRepository.findById(id).get();
+            Article newArticle = articleRepo.findById(id).get();
 
             Photo oldMain = newArticle.getMainPhoto();
             List<Photo> oldGallery = newArticle.getGallery();
@@ -117,7 +132,7 @@ public class ArticleService
             }
 
             newArticle.setId(id);
-            articleRepository.save(newArticle);
+            articleRepo.save(newArticle);
 
             response.setMessage("Successfully updated");
             response.setData(newArticle);
@@ -134,7 +149,7 @@ public class ArticleService
         ApiResponse<Article> response = new ApiResponse<>();
         try
         {
-            articleRepository.deleteById(id);
+            articleRepo.deleteById(id);
             response.setMessage("Successfully deleted");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e)
@@ -142,4 +157,5 @@ public class ArticleService
             throw new RuntimeException(e);
         }
     }
+
 }

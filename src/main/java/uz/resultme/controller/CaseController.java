@@ -35,14 +35,20 @@ public class CaseController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<CaseDTO>> getCaseById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return caseService.findById(id,lang);
     }
 
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Case>> getCaseById(@PathVariable Long id)
+    {
+        return caseService.findById(id);
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<CaseDTO>>> getCaseById(
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return caseService.findAll(lang);
     }

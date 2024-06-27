@@ -21,8 +21,8 @@ public class TableController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<MyTable>> createTable(
-            @RequestParam("option-id") Long optionId,
-            @RequestParam("option-lang") String lang,
+            @RequestParam("option-value-id") Long optionId,
+            @RequestParam("option-value-lang") String lang,
             @RequestParam(name = "spreadsheet-id",defaultValue = "1iTLpTVHwYxfpg-puUAlSqc2DqTkNlyRC-8lIOcQQOVc",required = false) String sheetId,
             @RequestParam(name = "sheet-name") String sheetName)
     {
@@ -30,3 +30,4 @@ public class TableController
     }
 
 }
+

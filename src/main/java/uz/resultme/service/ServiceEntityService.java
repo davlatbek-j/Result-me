@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Photo;
 import uz.resultme.entity.service.ServiceEntity;
+import uz.resultme.entity.service.ServiceOption;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.service.ServiceEntityDTO;
 import uz.resultme.repository.TableRepository;
@@ -142,14 +143,28 @@ public class ServiceEntityService
             response.setMessage("Service option not found by option-id: " + optionId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-        String tableUrlRu = serviceOptionRepo.findById(optionId).get().getTableUrlRu();
-        String tableUrlUz = serviceOptionRepo.findById(optionId).get().getTableUrlUz();
-
-        tableRepo.deleteByHttpUrl(tableUrlUz);
-        tableRepo.deleteByHttpUrl(tableUrlRu);
-
-        serviceOptionRepo.clearTableUrlsById(optionId);
+//        String tableUrlRu = serviceOptionRepo.findById(optionId).get().getTableUrlRu();
+//        String tableUrlUz = serviceOptionRepo.findById(optionId).get().getTableUrlUz();
+//
+//        tableRepo.deleteByHttpUrl(tableUrlUz);
+//        tableRepo.deleteByHttpUrl(tableUrlRu);
+//
+//        serviceOptionRepo.clearTableUrlsById(optionId);
         response.setMessage("Successfully deleted");
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceEntity>> findById(Long id)
+    {
+        ApiResponse<ServiceEntity> response = new ApiResponse<>();
+        if (!serviceRepo.existsById(id))
+        {
+            response.setMessage("Service not found by id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        ServiceEntity serviceEntity = serviceRepo.findById(id).get();
+        response.setMessage("Found");
+        response.setData(serviceEntity);
         return ResponseEntity.ok(response);
     }
 }

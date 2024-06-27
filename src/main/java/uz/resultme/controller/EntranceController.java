@@ -29,14 +29,21 @@ public class EntranceController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<EntranceDTO>> getEntranceById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return entranceService.findById(id, lang);
     }
 
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Entrance>> getEntranceById(@PathVariable Long id)
+    {
+        return entranceService.findById(id);
+    }
+
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<EntranceDTO>>> getEntranceById(
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return entranceService.findAll(lang);
     }

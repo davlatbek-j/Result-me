@@ -1,5 +1,6 @@
 package uz.resultme.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +11,14 @@ import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.google.sheets.RowsWrapper;
 import uz.resultme.service.GoogleSheetsService;
 
+@RequiredArgsConstructor
 
 @RestController
 @RequestMapping("/sheets")
 public class GoogleSheetsController
 {
 
-    @Autowired
-    private GoogleSheetsService googleSheetsService;
+    private final GoogleSheetsService googleSheetsService;
 
     @GetMapping("/data")
     public ResponseEntity<ApiResponse<RowsWrapper>> getSheetData(

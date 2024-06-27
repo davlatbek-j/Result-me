@@ -51,6 +51,20 @@ public class EntranceService
         return ResponseEntity.ok(response);
     }
 
+    public ResponseEntity<ApiResponse<Entrance>> findById(Long id)
+    {
+        ApiResponse<Entrance> response = new ApiResponse<>();
+        if (!entranceRepository.existsById(id))
+        {
+            response.setMessage("Not Found by id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        Entrance entrance = entranceRepository.findById(id).get();
+        response.setMessage("Found");
+        response.setData(entrance);
+        return ResponseEntity.ok(response);
+    }
+
     public ResponseEntity<ApiResponse<Entrance>> update(Long id, Entrance entrance)
     {
         ApiResponse<Entrance> response = new ApiResponse<>();

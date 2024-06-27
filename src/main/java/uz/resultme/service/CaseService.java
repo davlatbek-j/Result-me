@@ -72,6 +72,21 @@ public class CaseService
         return ResponseEntity.ok(response);
     }
 
+    public ResponseEntity<ApiResponse<Case>> findById(Long id)
+    {
+        ApiResponse<Case> response = new ApiResponse<>();
+        if (!caseRepository.existsById(id))
+        {
+            response.setMessage("Case not found by id " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        Case aCase = caseRepository.findById(id).get();
+        response.setMessage("Found");
+        response.setData(aCase);
+        return ResponseEntity.ok(response);
+    }
+
     public ResponseEntity<ApiResponse<List<CaseDTO>>> findAll(String lang)
     {
         ApiResponse<List<CaseDTO>> response = new ApiResponse<>();
@@ -163,4 +178,5 @@ public class CaseService
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
 }

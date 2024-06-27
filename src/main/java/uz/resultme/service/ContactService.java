@@ -43,6 +43,21 @@ public class ContactService
         return ResponseEntity.ok(response);
     }
 
+
+    public ResponseEntity<ApiResponse<Contact>> findById(Long id)
+    {
+        ApiResponse<Contact> response = new ApiResponse<>();
+        if (!contactRepository.existsById(id))
+        {
+            response.setMessage("Service not found by id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        contactRepository.findById(id).get();
+        response.setMessage("Found");
+        response.setData(contactRepository.findById(id).get());
+        return ResponseEntity.ok(response);
+    }
+
     public ResponseEntity<ApiResponse<Contact>> create(Contact contact)
     {
         ApiResponse<Contact> response = new ApiResponse<>();

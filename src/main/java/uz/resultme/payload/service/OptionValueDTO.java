@@ -1,49 +1,44 @@
 package uz.resultme.payload.service;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.service.ServiceOption;
+import uz.resultme.entity.service.OptionValue;
 import uz.resultme.exception.LanguageNotSupportException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceOptionDTO
+public class OptionValueDTO
 {
     Long id;
 
     String name;
 
-    List<OptionValueDTO> optionValue;
+    String httpTableUrl;
 
-    public ServiceOptionDTO(ServiceOption entity, String lang)
+    public OptionValueDTO(OptionValue entity, String lang)
     {
         this.id = entity.getId();
-        this.optionValue = new ArrayList<>();
-        entity.getOptionValue().forEach(i -> this.optionValue.add(new OptionValueDTO(i, lang)));
         switch (lang.toLowerCase())
         {
             case "uz":
             {
                 this.name = entity.getNameUz();
+                this.httpTableUrl = entity.getTableUrlUz();
                 break;
             }
             case "ru":
             {
                 this.name = entity.getNameRu();
+                this.httpTableUrl = entity.getTableUrlRu();
                 break;
             }
             default:
-            {
-                throw new LanguageNotSupportException("Language not supported: " + lang);
-            }
+                throw new LanguageNotSupportException("Language not supported:" + lang);
         }
-
     }
-
 }

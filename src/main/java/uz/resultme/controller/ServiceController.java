@@ -31,14 +31,21 @@ public class ServiceController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return entityService.findById(id,lang);
     }
 
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<ServiceEntity>> findById(@PathVariable Long id)
+    {
+        return entityService.findById(id);
+    }
+
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ServiceEntityDTO>>> findAll(
-            @RequestHeader(value = "Accept-Language")String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru")String lang)
     {
         return entityService.findAll(lang);
     }

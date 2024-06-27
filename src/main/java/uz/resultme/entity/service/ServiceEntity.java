@@ -1,13 +1,11 @@
 package uz.resultme.entity.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.MyTable;
 import uz.resultme.entity.Photo;
 
 import java.util.List;

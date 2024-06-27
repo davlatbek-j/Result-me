@@ -99,4 +99,19 @@ public class ResultService
 
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<ApiResponse<ProvidedResult>> findById(Long id)
+    {
+        ApiResponse<ProvidedResult> response = new ApiResponse<>();
+        if (!resultRepo.existsById(id))
+        {
+            response.setMessage("Not Found by id:" + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        ProvidedResult entity = resultRepo.findById(id).get();
+        response.setMessage("Found");
+        response.setData(entity);
+        return ResponseEntity.ok(response);
+    }
+
 }
