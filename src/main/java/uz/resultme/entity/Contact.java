@@ -22,8 +22,9 @@ public class Contact {
     String facebook;
 
     @ElementCollection
-    List<String> phones;
+    List<String> phone;
 
-    String address;
+    String addressUz;
 
+    String addressRu;
 }

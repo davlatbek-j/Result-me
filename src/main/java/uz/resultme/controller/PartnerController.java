@@ -34,10 +34,10 @@ public class PartnerController
         return partnerService.findAll();
     }
 
-    @GetMapping("/get/{url}")
-    public ResponseEntity<ApiResponse<PartnerDTO>> getPartnerByUrl(@PathVariable String url)
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse<PartnerDTO>> getPartnerByUrl(@PathVariable Long id)
     {
-        return partnerService.getByUrl(url);
+        return partnerService.getById(id);
     }
 
     @PutMapping("/update/{id}")

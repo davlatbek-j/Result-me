@@ -3,7 +3,7 @@ package uz.resultme.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.resultme.entity.Phone;
+import uz.resultme.entity.Contact;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.ContactDto;
 import uz.resultme.service.ContactService;
@@ -18,37 +18,30 @@ public class ContactController
     private final ContactService contactService;
 
     @PostMapping("/create")
-    public ResponseEntity<ContactDto> create(@RequestParam String instagram,
-                                             @RequestParam String telegram,
-                                             @RequestParam String facebook,
-                                             @RequestParam List<String> phone,
-                                             @RequestParam String location)
+    public ResponseEntity<ApiResponse<Contact>> create(@RequestBody Contact contact)
     {
-        return contactService.create(instagram, telegram, facebook, phone, location);
+        return contactService.create(contact);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts()
+    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts(
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
-        return contactService.getAllContact();
+        return contactService.getAllContact(lang);
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse<ContactDto>> getContactById(@PathVariable Long id)
+    public ResponseEntity<ApiResponse<ContactDto>> getContactById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
-        return contactService.findById(id);
+        return contactService.findById(id, lang);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<ContactDto>> update(
-            @PathVariable Long id,
-            @RequestParam String instagram,
-            @RequestParam String telegram,
-            @RequestParam String facebook,
-            @RequestParam List<String> phone,
-            @RequestParam String location)
+    public ResponseEntity<ApiResponse<Contact>> update(@PathVariable Long id, @RequestBody Contact contact)
     {
-        return contactService.update(id, instagram, telegram, facebook, phone, location);
+        return contactService.update(id, contact);
     }
 
     @DeleteMapping("/delete/{id}")

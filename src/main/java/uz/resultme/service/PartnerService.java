@@ -29,7 +29,8 @@ public class PartnerService
         ApiResponse<PartnerDTO> response = new ApiResponse<>();
         ObjectMapper objectMapper = new ObjectMapper();
         if (file.getContentType() == null ||
-                !file.getContentType().equals("image/png") || !file.getContentType().equals("image/svg"))
+                !(file.getContentType().equals("image/png") ||
+                        file.getContentType().equals("image/svg+xml")))
         {
             throw new IllegalPhotoTypeException("Unsupported image type :" + file.getContentType());
         }
@@ -79,11 +80,16 @@ public class PartnerService
     }
 
 
-    public ResponseEntity<ApiResponse<PartnerDTO>> getByUrl(String url)
+    public ResponseEntity<ApiResponse<PartnerDTO>> getById(Long id)
     {
         ApiResponse<PartnerDTO> response = new ApiResponse<>();
-        Partner partner = partnerRepository.findPartnerByPartnerUrl(url);
-        response.setMessage("Found partner with url " + url);
+        if (!partnerRepository.existsById(id)) {
+            response.setMessage("Partner not found by id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        Partner partner = partnerRepository.findById(id).get();
+        response.setMessage("Found");
+        response.setData(new PartnerDTO(partner));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -91,7 +97,7 @@ public class PartnerService
     {
         ApiResponse<List<PartnerDTO>> response = new ApiResponse<>();
         List<Partner> partners = partnerRepository.findAll();
-        response.setMessage("Found " + partners.size() + " article(s)");
+        response.setMessage("Found " + partners.size() + " partner(s)");
         response.setData(new ArrayList<>());
         partners.forEach(i -> response.getData().add(new PartnerDTO(i)));
 
