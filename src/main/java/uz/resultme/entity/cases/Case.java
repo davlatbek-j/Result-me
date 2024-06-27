@@ -46,7 +46,7 @@ public class Case
     List<String> requestRu;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<CaseEffect> effect;
+    List<Effect> effect;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<CaseResult> caseResult;

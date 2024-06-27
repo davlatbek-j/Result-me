@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class CaseEffect
+public class Effect
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

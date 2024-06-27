@@ -20,9 +20,12 @@ public class EntranceDTO
 
     String description;
 
+    Boolean active;
+
     public EntranceDTO(Entrance entity, String lang)
     {
         this.id = entity.getId();
+        this.active = entity.getActive();
         switch (lang.toLowerCase())
         {
             case "uz":

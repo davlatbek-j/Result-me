@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.resultme.entity.ProvidedResult;
+import uz.resultme.payload.cases.CaseEffectDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,26 +21,25 @@ public class ProvidedResultDTO
 
     String title;
 
-    String description;
+    List<CaseEffectDTO> effect;
 
     Boolean active;
 
 
-    public ProvidedResultDTO(ProvidedResult entity,String lang)
+    public ProvidedResultDTO(ProvidedResult entity, String lang)
     {
         this.id = entity.getId();
-        this.title = entity.getTitle();
         this.active = entity.getActive();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.description= entity.getDescriptionUz();
+                this.title = entity.getTitleUz();
                 break;
             }
             case "ru":
             {
-                this.description= entity.getDescriptionRu();
+                this.title = entity.getTitleRu();
                 break;
             }
             default:
@@ -44,5 +47,7 @@ public class ProvidedResultDTO
                 throw new IllegalArgumentException("Language not supported: " + lang);
             }
         }
+        this.effect = new ArrayList<>();
+        entity.getEffect().forEach(i -> this.effect.add(new CaseEffectDTO(i, lang)));
     }
 }

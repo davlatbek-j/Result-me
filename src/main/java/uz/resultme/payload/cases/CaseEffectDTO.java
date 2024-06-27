@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.cases.CaseEffect;
+import uz.resultme.entity.cases.Effect;
 import uz.resultme.exception.LanguageNotSupportException;
 
 @Data
@@ -20,11 +20,11 @@ public class CaseEffectDTO
 
     String effectDescription;
 
-    public CaseEffectDTO(CaseEffect entity, String lang)
+    public CaseEffectDTO(Effect entity, String lang)
     {
         this.id = entity.getId();
         this.value = entity.getValue();
-        switch (lang)
+        switch (lang.toLowerCase())
         {
             case "uz":
             {

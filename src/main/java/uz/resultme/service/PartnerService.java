@@ -6,11 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.Article;
 import uz.resultme.entity.Partner;
 import uz.resultme.entity.Photo;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.ArticleDTO;
 import uz.resultme.payload.PartnerDTO;
 import uz.resultme.repository.PartnerRepository;
 

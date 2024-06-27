@@ -32,14 +32,14 @@ public class ArticleController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ArticleDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accepted-Language") String lang)
+            @RequestHeader(value = "Accept-Language") String lang)
     {
         return articleService.getById(id, lang);
     }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(
-            @RequestHeader(value = "Accepted-Language") String lang)
+            @RequestHeader(value = "Accept-Language") String lang)
     {
         return articleService.findAll(lang);
     }
