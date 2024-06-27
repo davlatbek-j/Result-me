@@ -27,7 +27,7 @@ public class PartnerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Partner>> updatePartner(@PathVariable Long id,
-                                                                @RequestParam(name = "@photo") MultipartFile file
+                                                                @RequestParam(name = "photo") MultipartFile file
                                                  , @RequestParam(name = "url") String url) {
         return partnerService.updatePartner(id,file,url);
 
