@@ -17,14 +17,13 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Integer orderNum;
     String instagram;
     String telegram;
     String facebook;
-   /* @OneToMany
-    List<String> phone;*/
-    @OneToMany
-    List<Phone> phones;
+
+    @ElementCollection
+    List<String> phones;
+
     String address;
 
 }

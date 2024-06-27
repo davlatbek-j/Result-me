@@ -46,19 +46,10 @@ public class ContactService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<ContactDto> create(
-            String instagram,
-            String telegram,
-            String facebook,
-            List<Phone> phone,
-            String address) {
-        List<Phone> phoneList=new ArrayList<>();
-        phone.forEach(phone1 -> {
-            Phone phone2=phoneRepository.save(phone1);
-            phoneList.add(phone2);
-        });
+    public ResponseEntity<ContactDto> create(String instagram, String telegram, String facebook, List<String> phone, String address) {
+
         Contact contact=new Contact();
-        contact.setPhones(phoneList);
+        contact.setPhones(phone);
         contact.setFacebook(facebook);
         contact.setInstagram(instagram);
         contact.setTelegram(telegram);
@@ -74,7 +65,7 @@ public class ContactService {
             String instagram,
             String telegram,
             String facebook,
-            List<Phone> phone,
+            List<String> phone,
             String location) {
 
         ApiResponse<ContactDto> apiResponse = new ApiResponse<>();
@@ -102,7 +93,7 @@ public class ContactService {
     public ResponseEntity<?> deleteById(Long id) {
         ApiResponse<?> apiResponse = new ApiResponse<>();
         if (!contactRepository.existsById(id)) {
-            apiResponse.setMessage("Service not found by id: " + id);
+            apiResponse.setMessage("Contact not found by id: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
         }
         contactRepository.deleteById(id);

@@ -28,6 +28,18 @@ public class PartnerController
         return partnerService.addPartner(file, url);
     }
 
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<PartnerDTO>>> getAllPartners()
+    {
+        return partnerService.findAll();
+    }
+
+    @GetMapping("/get/{url}")
+    public ResponseEntity<ApiResponse<PartnerDTO>> getPartnerByUrl(@PathVariable String url)
+    {
+        return partnerService.getByUrl(url);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Partner>> updatePartner(
             @PathVariable Long id,
@@ -43,15 +55,4 @@ public class PartnerController
         return partnerService.delete(id);
     }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<PartnerDTO>>> getAllPartners()
-    {
-        return partnerService.findAll();
-    }
-
-    @GetMapping("/get/{url}")
-    public ResponseEntity<ApiResponse<PartnerDTO>> getPartnerByUrl(@PathVariable String url)
-    {
-        return partnerService.getByUrl(url);
-    }
 }

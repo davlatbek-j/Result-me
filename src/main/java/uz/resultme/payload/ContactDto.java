@@ -20,7 +20,7 @@ public class ContactDto {
     String instagram;
     String telegram;
     String facebook;
-    List<Phone> phone;
+    List<String> phone;
     String location;
 
     public ContactDto(Contact contact){
