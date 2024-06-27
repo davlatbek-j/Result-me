@@ -15,7 +15,6 @@ import uz.resultme.repository.PhotoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -52,7 +51,7 @@ public class ContactService {
             String telegram,
             String facebook,
             List<Phone> phone,
-            String location) {
+            String address) {
         List<Phone> phoneList=new ArrayList<>();
         phone.forEach(phone1 -> {
             Phone phone2=phoneRepository.save(phone1);
@@ -63,7 +62,7 @@ public class ContactService {
         contact.setFacebook(facebook);
         contact.setInstagram(instagram);
         contact.setTelegram(telegram);
-        contact.setLocation(location);
+        contact.setAddress(address);
         contactRepository.save(contact);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ContactDto(contact));
@@ -88,7 +87,7 @@ public class ContactService {
         contact.setInstagram(instagram);
         contact.setTelegram(telegram);
         contact.setPhones(phone);
-        contact.setLocation(location);
+        contact.setAddress(location);
         contactRepository.save(contact);
 
 

@@ -30,7 +30,7 @@ public class ContactDto {
         this.instagram=contact.getInstagram();
         this.telegram=contact.getTelegram();
         this.phone=contact.getPhones();
-        this.location=contact.getLocation();
+        this.location=contact.getAddress();
     }
 
 }
