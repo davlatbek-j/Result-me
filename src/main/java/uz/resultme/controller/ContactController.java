@@ -14,17 +14,17 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/contacts")
+@RequestMapping("/contact")
 public class ContactController {
 
     private final ContactService contactService;
 
-    @GetMapping("/all")
+    @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts() {
         return contactService.getAllContact();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ContactDto>> getContactById(@PathVariable Long id) {
         return contactService.findById(id);
     }
@@ -37,14 +37,14 @@ public class ContactController {
 
     @PostMapping("/create")
     public ResponseEntity<ContactDto> create(@RequestParam String instagram,
-                                            @RequestParam String telegram,
+                                             @RequestParam String telegram,
                                              @RequestParam String facebook,
                                              @RequestParam List<Phone> phone,
                                              @RequestParam String location) {
         return contactService.create(instagram, telegram, facebook, phone, location);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<ContactDto>> update(
             @PathVariable Long id,
             @RequestParam String instagram,
