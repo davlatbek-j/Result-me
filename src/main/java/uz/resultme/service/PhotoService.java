@@ -49,7 +49,7 @@ public class PhotoService
             photoRepo.save(photo);
 
             String originalFilename = file.getOriginalFilename();
-            File destinationFile = new File(uploadDir + "\\" + photo.getId() + "-" + originalFilename);
+            File destinationFile = new File(uploadDir + "/" + photo.getId() + "-" + originalFilename);
             file.transferTo(destinationFile);
 
             photo.setName(photo.getId() + "-" + originalFilename);
