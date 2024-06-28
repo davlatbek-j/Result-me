@@ -66,9 +66,9 @@ public class ServiceController
     }
 
     @DeleteMapping("/delete-table")
-    public ResponseEntity<?> deleteTableOfOption(@RequestParam("option-id") Long optionId)
+    public ResponseEntity<?> deleteTableOfOption(@RequestParam("optionValueId") Long optionValueId)
     {
-        return entityService.deleteTableOfOption(optionId);
+        return entityService.deleteTableOfOption(optionValueId);
     }
 
 }

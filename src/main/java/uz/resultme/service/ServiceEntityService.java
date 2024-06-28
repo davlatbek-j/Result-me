@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Photo;
+import uz.resultme.entity.service.OptionValue;
 import uz.resultme.entity.service.ServiceEntity;
-import uz.resultme.entity.service.ServiceOption;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.service.ServiceEntityDTO;
+import uz.resultme.repository.OptionValueRepository;
 import uz.resultme.repository.TableRepository;
 import uz.resultme.repository.service.ServiceEntityRepository;
 import uz.resultme.repository.service.ServiceOptionRepository;
@@ -28,6 +29,7 @@ public class ServiceEntityService
     private final PhotoService photoService;
     private final ServiceOptionRepository serviceOptionRepo;
     private final TableRepository tableRepo;
+    private final OptionValueRepository optionValueRepo;
 
     public ResponseEntity<ApiResponse<ServiceEntity>> create(String json, MultipartFile file)
     {
@@ -135,21 +137,21 @@ public class ServiceEntityService
         return ResponseEntity.ok(apiResponse);
     }
 
-    public ResponseEntity<?> deleteTableOfOption(Long optionId)
+    public ResponseEntity<?> deleteTableOfOption(Long optionValueId)
     {
         ApiResponse<?> response = new ApiResponse<>();
-        if (!serviceOptionRepo.existsById(optionId))
+
+        if (!optionValueRepo.existsById(optionValueId))
         {
-            response.setMessage("Service option not found by option-id: " + optionId);
+            response.setMessage("Option Value not found by id: " + optionValueId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-//        String tableUrlRu = serviceOptionRepo.findById(optionId).get().getTableUrlRu();
-//        String tableUrlUz = serviceOptionRepo.findById(optionId).get().getTableUrlUz();
-//
-//        tableRepo.deleteByHttpUrl(tableUrlUz);
-//        tableRepo.deleteByHttpUrl(tableUrlRu);
-//
-//        serviceOptionRepo.clearTableUrlsById(optionId);
+
+        OptionValue optionValue = optionValueRepo.findById(optionValueId).get();
+        optionValue.setTableUrlRu(null);
+        optionValue.setTableUrlUz(null);
+        optionValueRepo.save(optionValue);
+
         response.setMessage("Successfully deleted");
         return ResponseEntity.ok(response);
     }
