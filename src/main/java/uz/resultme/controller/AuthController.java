@@ -24,4 +24,11 @@ public class AuthController
     {
         return authService.login(signIn);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test()
+    {
+        return ResponseEntity.ok("This is a test , All right?? Sabr please....");
+    }
+
 }

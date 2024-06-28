@@ -33,7 +33,7 @@ public class TableService
         myTable.setSheetId(sheetId);
         myTable.setRange(sheetName + "!A:Z");
         myTable.setHttpUrl(
-                "http://localhost:9000/sheets/data?sheet-id=" + sheetId + "&range=" + sheetName + "!A:Z");
+                "http://213.230.91.55:9000/sheets/data?sheet-id=" + sheetId + "&range=" + sheetName + "!A:Z");
 
         switch (optionValueLang.toLowerCase())
         {

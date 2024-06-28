@@ -55,7 +55,7 @@ public class PhotoService
             photo.setName(photo.getId() + "-" + originalFilename);
             photo.setFilepath(destinationFile.getAbsolutePath());
             photo.setType(file.getContentType());
-            photo.setHttpUrl("http://localhost:9000/photo/" + photo.getName());
+            photo.setHttpUrl("http://213.230.91.55:9000/photo/" + photo.getName());
 
             return photoRepo.save(photo);
         } catch (IOException e)

@@ -44,6 +44,7 @@ public class SecurityConfiguration
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/sheets/**").permitAll()
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/test").permitAll()
 //                        .requestMatchers("/article/get/**", "/article/get-all").permitAll()
 //                        .requestMatchers("/case/get/**", "/case/get-all").permitAll()
 //                        .requestMatchers("/case/get/**", "/case/get-all").permitAll()
