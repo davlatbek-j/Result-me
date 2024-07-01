@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Photo;
 import uz.resultme.exception.IllegalPhotoTypeException;
+import uz.resultme.exception.PhotoNotFoundExcpetion;
 import uz.resultme.repository.PhotoRepository;
 
 import java.io.File;
@@ -50,6 +51,7 @@ public class PhotoService
 
             String originalFilename = file.getOriginalFilename();
             File destinationFile = new File(uploadDir + "/" + photo.getId() + "-" + originalFilename);
+//            File destinationFile = new File(uploadDir + "\\" + photo.getId() + "-" + originalFilename);
             file.transferTo(destinationFile);
 
             photo.setName(photo.getId() + "-" + originalFilename);
@@ -96,7 +98,8 @@ public class PhotoService
 
         } catch (IOException e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new PhotoNotFoundExcpetion(e.getMessage());
         }
         return null;
     }
