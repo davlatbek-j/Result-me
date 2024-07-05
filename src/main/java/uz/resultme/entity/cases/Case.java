@@ -35,8 +35,10 @@ public class Case
 
     String nameRu;
 
+    @Column(length = 500)
     String aboutUz;
 
+    @Column(length = 500)
     String aboutRu;
 
     @ElementCollection
