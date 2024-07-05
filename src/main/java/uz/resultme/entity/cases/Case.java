@@ -23,16 +23,22 @@ public class Case
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(length = 500)
     String titleUz;
 
+    @Column(length = 500)
     String titleRu;
 
+    @Column(length = 500)
     String descriptionUz;
 
+    @Column(length = 500)
     String descriptionRu;
 
+    @Column(length = 500)
     String nameUz;
 
+    @Column(length = 500)
     String nameRu;
 
     @Column(length = 500)
@@ -42,9 +48,11 @@ public class Case
     String aboutRu;
 
     @ElementCollection
+    @Column(name = "request_uz", length = 500)
     List<String> requestUz;
 
     @ElementCollection
+    @Column(name = "request_uz", length = 500)
     List<String> requestRu;
 
     @OneToMany(cascade = CascadeType.ALL)
