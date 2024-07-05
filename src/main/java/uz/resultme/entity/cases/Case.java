@@ -59,6 +59,7 @@ public class Case
     List<Effect> effect;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "case_result", length = 500)
     List<CaseResult> caseResult;
 
     @OneToOne(cascade = CascadeType.ALL)
