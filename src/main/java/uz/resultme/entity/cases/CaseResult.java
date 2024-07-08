@@ -21,8 +21,10 @@ public class CaseResult
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(length = 400)
     String titleUz;
 
+    @Column(length = 400)
     String titleRu;
 
     @ElementCollection

@@ -41,25 +41,22 @@ public class Case
     @Column(length = 500)
     String nameRu;
 
-    @Column(length = 500)
+    @Column(length = 1000)
     String aboutUz;
 
-    @Column(length = 500)
+    @Column(length = 1000)
     String aboutRu;
 
     @ElementCollection
-    @Column(name = "request_uz", length = 500)
     List<String> requestUz;
 
     @ElementCollection
-    @Column(name = "request_uz", length = 500)
     List<String> requestRu;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Effect> effect;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "case_result", length = 500)
     List<CaseResult> caseResult;
 
     @OneToOne(cascade = CascadeType.ALL)
