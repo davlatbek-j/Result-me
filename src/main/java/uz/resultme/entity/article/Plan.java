@@ -21,9 +21,9 @@ public class Plan
 
     String nameRu;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     String textUz;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     String textRu;
 }
