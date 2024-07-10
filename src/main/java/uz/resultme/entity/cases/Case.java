@@ -41,10 +41,10 @@ public class Case
     @Column(length = 500)
     String nameRu;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     String aboutUz;
 
-    @Column(length = 1000)
+    @Column(length = 2000)
     String aboutRu;
 
     @ElementCollection
