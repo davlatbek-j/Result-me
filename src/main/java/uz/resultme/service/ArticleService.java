@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.article.Article;
 import uz.resultme.entity.Photo;
+import uz.resultme.entity.article.Article;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.article.ArticleDTO;
 import uz.resultme.repository.ArticleRepository;
@@ -25,7 +25,7 @@ public class ArticleService
     private final ArticleRepository articleRepo;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<Article>> create(String jsonArticle, MultipartFile mainPhoto, List<MultipartFile> gallery)
+    public ResponseEntity<ApiResponse<Article>> create(String jsonArticle, MultipartFile mainPhoto, MultipartFile bodyPhoto, List<MultipartFile> gallery)
     {
         ApiResponse<Article> response = new ApiResponse<>();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -36,6 +36,9 @@ public class ArticleService
 
             Photo main = photoService.save(mainPhoto);
             article.setMainPhoto(main);
+
+            Photo body = photoService.save(bodyPhoto);
+            article.setBodyPhoto(body);
 
             article.setGallery(new ArrayList<>());
             for (MultipartFile multipartFile : gallery)
@@ -94,7 +97,7 @@ public class ArticleService
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, List<MultipartFile> newGallery)
+    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery)
     {
         ApiResponse<Article> response = new ApiResponse<>();
         if (!articleRepo.existsById(id))
@@ -108,6 +111,7 @@ public class ArticleService
             Article newArticle = articleRepo.findById(id).get();
 
             Photo oldMain = newArticle.getMainPhoto();
+            Photo oldBody = newArticle.getBodyPhoto();
             List<Photo> oldGallery = newArticle.getGallery();
 
             if (json != null)
@@ -129,6 +133,13 @@ public class ArticleService
                 for (MultipartFile multipartFile : newGallery)
                     if (multipartFile.getSize() > 0)
                         newArticle.getGallery().add(photoService.save(multipartFile));
+            }
+
+            if (newBodyPhoto == null || newBodyPhoto.isEmpty())
+                newArticle.setBodyPhoto(oldBody);
+            else
+            {
+                newArticle.setBodyPhoto(photoService.save(newBodyPhoto));
             }
 
             newArticle.setId(id);
@@ -154,7 +165,8 @@ public class ArticleService
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e)
         {
-            throw new RuntimeException(e);
+            response.setMessage("Error deleting article" + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 

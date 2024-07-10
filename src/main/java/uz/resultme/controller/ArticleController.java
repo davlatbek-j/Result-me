@@ -24,9 +24,10 @@ public class ArticleController
     public ResponseEntity<ApiResponse<Article>> create(
             @RequestParam(name = "json") String jsonArticle,
             @RequestPart(name = "main-photo") MultipartFile mainPhoto,
+            @RequestPart(name = "body-photo") MultipartFile bodyPhoto,
             @RequestPart(name = "gallery") List<MultipartFile> gallery)
     {
-        return articleService.create(jsonArticle, mainPhoto, gallery);
+        return articleService.create(jsonArticle, mainPhoto, bodyPhoto, gallery);
     }
 
     @GetMapping("/get/{id}")
@@ -55,9 +56,10 @@ public class ArticleController
             @PathVariable Long id,
             @RequestParam(name = "json", required = false) String json,
             @RequestPart(name = "main-photo", required = false) MultipartFile mainPhoto,
+            @RequestPart(name = "body-photo", required = false) MultipartFile bodyPhoto,
             @RequestPart(name = "gallery", required = false) List<MultipartFile> gallery)
     {
-        return articleService.update(id, json, mainPhoto, gallery);
+        return articleService.update(id, json, mainPhoto, bodyPhoto, gallery);
     }
 
     @DeleteMapping("/delete/{id}")

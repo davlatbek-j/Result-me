@@ -28,6 +28,8 @@ public class ArticleDTO
 
     PhotoDTO mainPhoto;
 
+    PhotoDTO bodyPhoto;
+
     List<PhotoDTO> gallery;
 
     Boolean active;
@@ -36,6 +38,7 @@ public class ArticleDTO
     {
         this.id = entity.getId();
         this.mainPhoto = new PhotoDTO(entity.getMainPhoto());
+        this.bodyPhoto = new PhotoDTO(entity.getBodyPhoto());
         this.gallery = new ArrayList<>();
         entity.getGallery().forEach(i -> this.gallery.add(new PhotoDTO(i)));
         this.active = entity.getActive();
