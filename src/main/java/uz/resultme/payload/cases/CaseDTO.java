@@ -28,6 +28,8 @@ public class CaseDTO
 
     String about;
 
+    String link;
+
     List<String> request;
 
     List<CaseEffectDTO> effect;
@@ -45,6 +47,7 @@ public class CaseDTO
         this.id = aCase.getId();
         this.mainPhoto = new PhotoDTO(aCase.getMainPhoto());
         this.gallery = new ArrayList<>();
+        this.link = aCase.getLink();
         aCase.getGallery().forEach(i -> this.gallery.add(new PhotoDTO(i)));
         this.active = aCase.getActive();
 

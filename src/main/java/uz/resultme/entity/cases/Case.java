@@ -47,6 +47,8 @@ public class Case
     @Column(length = 2000)
     String aboutRu;
 
+    String link;
+
     @ElementCollection
     List<String> requestUz;
 
