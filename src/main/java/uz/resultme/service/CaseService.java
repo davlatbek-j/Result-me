@@ -7,14 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.cases.Case;
 import uz.resultme.entity.Photo;
+import uz.resultme.entity.cases.Case;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.cases.CaseDTO;
 import uz.resultme.repository.CaseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 
@@ -165,7 +166,7 @@ public class CaseService
                     newCase.getGallery().add(photoService.save(multipartFile));
             }
 
-                newCase.setId(id);
+            newCase.setId(id);
             Case save = caseRepository.save(newCase);
 
             response.setMessage("Updated");
@@ -179,4 +180,19 @@ public class CaseService
         }
     }
 
+    public ResponseEntity<ApiResponse<Case>> update(Long id, Case acase)
+    {
+        ApiResponse<Case> response = new ApiResponse<>();
+        Optional<Case> byId = caseRepository.findById(id);
+        if (byId.isPresent())
+        {
+            acase.setId(id);
+            response.setMessage("Updated");
+            response.setData(caseRepository.save(acase));
+            return ResponseEntity.ok(response);
+        }
+        response.setMessage("Case not found by id " + id);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+    }
 }

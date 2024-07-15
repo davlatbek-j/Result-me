@@ -62,11 +62,10 @@ public class CaseController
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Case>> updateCaseById(
             @PathVariable Long id,
-            @RequestParam(name = "json",required = false) String caseJson,
-            @RequestParam(name = "main-photo",required = false) MultipartFile mainPhoto,
-            @RequestParam(name = "gallery",required = false) List<MultipartFile> gallery)
+            @RequestBody Case acase)
     {
-        return caseService.update(id,caseJson,mainPhoto,gallery);
+        return caseService.update(id,acase);
+//        return caseService.update(id,caseJson,mainPhoto,gallery);
     }
 
 }
