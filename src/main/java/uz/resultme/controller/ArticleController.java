@@ -22,8 +22,8 @@ public class ArticleController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Article>> create(
-            @RequestBody  String jsonArticle) {
-        return articleService.create(jsonArticle);
+            @RequestBody  Article article) {
+        return articleService.create(article);
     }
 
     @PostMapping("/image")

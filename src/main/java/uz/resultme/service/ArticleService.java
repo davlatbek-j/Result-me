@@ -19,32 +19,27 @@ import java.util.List;
 @RequiredArgsConstructor
 
 @Service
-public class ArticleService
-{
+public class ArticleService {
 
     private final ArticleRepository articleRepo;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<Article>> create(String jsonArticle/* List<MultipartFile> gallery*/) {
+    public ResponseEntity<ApiResponse<Article>> create(Article articleRequest) {
+
         ApiResponse<Article> response = new ApiResponse<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Article article = objectMapper.readValue(jsonArticle, Article.class);
-            article.setId(null);
+        Article article = new Article();
+        article.setTitleUz(articleRequest.getTitleUz());
+        article.setTitleRu(articleRequest.getTitleRu());
+        article.setThemeUz(articleRequest.getThemeUz());
+        article.setThemeRu(articleRequest.getThemeRu());
+        article.setPlan(articleRequest.getPlan());
+        article.setActive(articleRequest.getActive());
 
+        Article saved = articleRepo.save(article);
+        response.setMessage("Successfully created");
+        response.setData(saved);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
-           /* article.setGallery(new ArrayList<>());
-            for (MultipartFile multipartFile : gallery)
-                article.getGallery().add(photoService.save(multipartFile));*/
-
-            Article saved = articleRepo.save(article);
-            response.setMessage("Successfully created");
-            response.setData(saved);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (JsonProcessingException e) {
-            response.setMessage("Error on parsing json");
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file) {
@@ -63,7 +58,7 @@ public class ArticleService
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<ApiResponse<Article>> uploadGallery(Long id,List<MultipartFile> gallery){
+    public ResponseEntity<ApiResponse<Article>> uploadGallery(Long id, List<MultipartFile> gallery) {
         ApiResponse<Article> response = new ApiResponse<>();
         if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
@@ -82,12 +77,9 @@ public class ArticleService
     }
 
 
-
-    public ResponseEntity<ApiResponse<ArticleDTO>> getById(Long id, String lang)
-    {
+    public ResponseEntity<ApiResponse<ArticleDTO>> getById(Long id, String lang) {
         ApiResponse<ArticleDTO> response = new ApiResponse<>();
-        if (!articleRepo.existsById(id))
-        {
+        if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
@@ -99,11 +91,9 @@ public class ArticleService
     }
 
 
-    public ResponseEntity<ApiResponse<Article>> getById(Long id)
-    {
+    public ResponseEntity<ApiResponse<Article>> getById(Long id) {
         ApiResponse<Article> response = new ApiResponse<>();
-        if (!articleRepo.existsById(id))
-        {
+        if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
@@ -113,8 +103,7 @@ public class ArticleService
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(String lang)
-    {
+    public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(String lang) {
         ApiResponse<List<ArticleDTO>> response = new ApiResponse<>();
         List<Article> articles = articleRepo.findAll();
         response.setMessage("Found " + articles.size() + " article(s)");
@@ -124,25 +113,21 @@ public class ArticleService
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery)
-    {
+    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery) {
         ApiResponse<Article> response = new ApiResponse<>();
-        if (!articleRepo.existsById(id))
-        {
+        if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        try
-        {
+        try {
             Article newArticle = articleRepo.findById(id).get();
 
             Photo oldMain = newArticle.getMainPhoto();
             Photo oldBody = newArticle.getBodyPhoto();
             List<Photo> oldGallery = newArticle.getGallery();
 
-            if (json != null)
-            {
+            if (json != null) {
                 ObjectMapper objMapper = new ObjectMapper();
                 newArticle = objMapper.readValue(json, Article.class);
             }
@@ -154,8 +139,7 @@ public class ArticleService
 
             if (newGallery == null || newGallery.get(0).isEmpty())
                 newArticle.setGallery(oldGallery);
-            else
-            {
+            else {
                 newArticle.setGallery(new ArrayList<>());
                 for (MultipartFile multipartFile : newGallery)
                     if (multipartFile.getSize() > 0)
@@ -164,8 +148,7 @@ public class ArticleService
 
             if (newBodyPhoto == null || newBodyPhoto.isEmpty())
                 newArticle.setBodyPhoto(oldBody);
-            else
-            {
+            else {
                 newArticle.setBodyPhoto(photoService.save(newBodyPhoto));
             }
 
@@ -176,22 +159,18 @@ public class ArticleService
             response.setData(newArticle);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
-        } catch (JsonProcessingException e)
-        {
+        } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public ResponseEntity<ApiResponse<Article>> delete(Long id)
-    {
+    public ResponseEntity<ApiResponse<Article>> delete(Long id) {
         ApiResponse<Article> response = new ApiResponse<>();
-        try
-        {
+        try {
             articleRepo.deleteById(id);
             response.setMessage("Successfully deleted");
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             response.setMessage("Error deleting article" + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
