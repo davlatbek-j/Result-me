@@ -22,7 +22,7 @@ public class ArticleController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Article>> create(
-            @RequestParam(name = "json") String jsonArticle) {
+            @RequestBody  String jsonArticle) {
         return articleService.create(jsonArticle);
     }
 
