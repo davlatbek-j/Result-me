@@ -25,35 +25,62 @@ public class ArticleService
     private final ArticleRepository articleRepo;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<Article>> create(String jsonArticle, MultipartFile mainPhoto, MultipartFile bodyPhoto, List<MultipartFile> gallery)
-    {
+    public ResponseEntity<ApiResponse<Article>> create(String jsonArticle/* List<MultipartFile> gallery*/) {
         ApiResponse<Article> response = new ApiResponse<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        try
-        {
+        try {
             Article article = objectMapper.readValue(jsonArticle, Article.class);
             article.setId(null);
 
-            Photo main = photoService.save(mainPhoto);
-            article.setMainPhoto(main);
 
-            Photo body = photoService.save(bodyPhoto);
-            article.setBodyPhoto(body);
-
-            article.setGallery(new ArrayList<>());
+           /* article.setGallery(new ArrayList<>());
             for (MultipartFile multipartFile : gallery)
-                article.getGallery().add(photoService.save(multipartFile));
+                article.getGallery().add(photoService.save(multipartFile));*/
 
             Article saved = articleRepo.save(article);
             response.setMessage("Successfully created");
             response.setData(saved);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (JsonProcessingException e)
-        {
+        } catch (JsonProcessingException e) {
             response.setMessage("Error on parsing json");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file) {
+        ApiResponse<Article> response = new ApiResponse<>();
+
+        if (!articleRepository.existsById(id)) {
+            response.setMessage("Article with id " + id + " does not exist");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        Article article = articleRepository.findById(id).get();
+        Photo main = photoService.save(file);
+        article.setMainPhoto(main);
+        Article saved = articleRepository.save(article);
+        response.setMessage("Photo succesfully saved");
+        response.setData(saved);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<ApiResponse<Article>> uploadGallery(Long id,List<MultipartFile> gallery){
+        ApiResponse<Article> response = new ApiResponse<>();
+        if (!articleRepository.existsById(id)) {
+            response.setMessage("Article with id " + id + " does not exist");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        Article article = articleRepository.findById(id).get();
+
+        article.setGallery(new ArrayList<>());
+        for (MultipartFile multipartFile : gallery)
+            article.getGallery().add(photoService.save(multipartFile));
+
+        Article saved = articleRepository.save(article);
+        response.setMessage("Gallery succesfully saved");
+        response.setData(saved);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
 
 
     public ResponseEntity<ApiResponse<ArticleDTO>> getById(Long id, String lang)
