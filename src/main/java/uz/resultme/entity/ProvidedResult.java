@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import uz.resultme.entity.cases.Effect;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,14 +22,12 @@ public class ProvidedResult
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String title;
+    String titleUz;
 
-    String descriptionUz;
+    String titleRu;
 
-    String descriptionRu;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Effect> effect;
 
     Boolean active;
-
-//    @Column(unique = true)
-    Integer orderNum;
 }

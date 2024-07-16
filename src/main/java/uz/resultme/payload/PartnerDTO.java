@@ -22,5 +22,6 @@ public class PartnerDTO {
     {
         this.id = entity.getId();
         this.photo = new PhotoDTO(entity.getPhoto());
+        this.partnerUrl = entity.getPartnerUrl();
     }
 }

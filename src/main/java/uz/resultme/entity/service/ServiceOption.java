@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,9 +25,6 @@ public class ServiceOption
 
     String nameRu;
 
-    @ElementCollection
-    List<String> valueUz;
-
-    @ElementCollection
-    List<String> valueRu;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<OptionValue> optionValue;
 }

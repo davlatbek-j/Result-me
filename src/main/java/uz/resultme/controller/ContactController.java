@@ -4,55 +4,57 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.resultme.entity.Contact;
-import uz.resultme.entity.Phone;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.ContactDto;
 import uz.resultme.service.ContactService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/contacts")
-public class ContactController {
-
+@RequestMapping("/contact")
+public class ContactController
+{
     private final ContactService contactService;
 
-    @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts() {
-        return contactService.getAllContact();
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<Contact>> create(@RequestBody Contact contact)
+    {
+        return contactService.create(contact);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ContactDto>> getContactById(@PathVariable Long id) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse<ContactDto>> getContactById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
+    {
+        return contactService.findById(id, lang);
+    }
+
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Contact>> getContactById(
+            @PathVariable Long id)
+    {
         return contactService.findById(id);
     }
 
 
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<ContactDto>>> getAllContacts(
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
+    {
+        return contactService.getAllContact(lang);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<Contact>> update(@PathVariable Long id, @RequestBody Contact contact)
+    {
+        return contactService.update(id, contact);
+    }
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteContact(@PathVariable Long id) {
+    public ResponseEntity<?> deleteContact(@PathVariable Long id)
+    {
         return contactService.deleteById(id);
     }
-
-    @PostMapping("/create")
-    public ResponseEntity<ContactDto> create(@RequestParam String instagram,
-                                            @RequestParam String telegram,
-                                             @RequestParam String facebook,
-                                             @RequestParam List<Phone> phone,
-                                             @RequestParam String location) {
-        return contactService.create(instagram, telegram, facebook, phone, location);
-    }
-
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<ApiResponse<ContactDto>> update(
-            @PathVariable Long id,
-            @RequestParam String instagram,
-            @RequestParam String telegram,
-            @RequestParam String facebook,
-            @RequestParam List<Phone> phone,
-            @RequestParam String location) {
-        return contactService.update(id, instagram, telegram, facebook, phone, location);
-    }
-
 }

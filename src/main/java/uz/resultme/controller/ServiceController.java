@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.ServiceEntity;
+import uz.resultme.entity.service.ServiceEntity;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.ServiceEntityDTO;
+import uz.resultme.payload.service.ServiceEntityDTO;
 import uz.resultme.service.ServiceEntityService;
 
 import java.util.List;
@@ -31,14 +31,21 @@ public class ServiceController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return entityService.findById(id,lang);
     }
 
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<ServiceEntity>> findById(@PathVariable Long id)
+    {
+        return entityService.findById(id);
+    }
+
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ServiceEntityDTO>>> findAll(
-            @RequestHeader(value = "Accept-Language")String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru")String lang)
     {
         return entityService.findAll(lang);
     }
@@ -56,6 +63,12 @@ public class ServiceController
     public ResponseEntity<?> deleteById(@PathVariable Long id)
     {
         return entityService.deleteById(id);
+    }
+
+    @DeleteMapping("/delete-table")
+    public ResponseEntity<?> deleteTableOfOption(@RequestParam("option-value-id") Long optionValueId)
+    {
+        return entityService.deleteTableOfOption(optionValueId);
     }
 
 }

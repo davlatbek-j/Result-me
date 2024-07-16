@@ -1,11 +1,11 @@
-package uz.resultme.payload;
+package uz.resultme.payload.article;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.Plan;
+import uz.resultme.entity.article.Plan;
 import uz.resultme.exception.LanguageNotSupportException;
 
 @Data

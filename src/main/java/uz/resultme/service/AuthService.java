@@ -1,10 +1,12 @@
 package uz.resultme.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.resultme.payload.ApiResponse;
+import uz.resultme.payload.AuthResponse;
 import uz.resultme.payload.SignIn;
 import uz.resultme.repository.UserRepository;
 import uz.resultme.security.JwtTokenService;
@@ -19,20 +21,21 @@ public class AuthService
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenService tokenService;
 
-    public ResponseEntity<ApiResponse<String>> login(SignIn signIn)
+    public ResponseEntity<ApiResponse<?>> login(SignIn signIn)
     {
         User byLogin = userRepository.findByUsername(signIn.getUsername());
+        ApiResponse<AuthResponse> response = new ApiResponse<>();
         if (byLogin != null)
         {
             if (passwordEncoder.matches(signIn.getPassword(), byLogin.getPassword()))
             {
-                ApiResponse<String> response = new ApiResponse<>();
                 response.setMessage("Login successful");
-                response.setData("Token: "+tokenService.generateToken(signIn.getUsername()));
+                response.setData(new AuthResponse(tokenService.generateToken(signIn.getUsername())));
                 return ResponseEntity.ok(response);
             }
         }
-        return null;
+        response.setMessage("Username or password incorrect");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
 }

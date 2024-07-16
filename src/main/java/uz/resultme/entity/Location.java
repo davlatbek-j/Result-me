@@ -1,5 +1,6 @@
 package uz.resultme.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,29 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class ServiceEntity
+public class Location
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
-
-    String nameRu;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    List<ServiceOption> option;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    Photo icon;
+    String url;
 
     Boolean active;
 }

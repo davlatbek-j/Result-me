@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 import uz.resultme.repository.UserRepository;
 import uz.resultme.security.User;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
+
 @RequiredArgsConstructor
 @Component
 public class DataLoader implements CommandLineRunner
@@ -22,7 +28,7 @@ public class DataLoader implements CommandLineRunner
             return;
         User user = new User();
         user.setUsername("molochay");
-        user.setPassword(passwordEncoder.encode("off"));
+        user.setPassword(passwordEncoder.encode("off@onn"));
         userRepository.save(user);
     }
 }

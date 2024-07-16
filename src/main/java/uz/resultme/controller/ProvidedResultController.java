@@ -28,19 +28,26 @@ public class ProvidedResultController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ProvidedResultDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return resultService.findById(id,lang);
     }
 
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<ProvidedResult>> findById(@PathVariable Long id)
+    {
+        return resultService.findById(id);
+    }
+
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ProvidedResultDTO>>> getAll(
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
     {
         return resultService.getAll(lang);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<ProvidedResult>> update(@PathVariable Long id, @RequestBody ProvidedResult providedResult)
     {
         return resultService.update(id,providedResult);

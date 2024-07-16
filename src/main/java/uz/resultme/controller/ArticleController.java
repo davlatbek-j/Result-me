@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.resultme.entity.Article;
+import uz.resultme.entity.article.Article;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.ArticleDTO;
+import uz.resultme.payload.article.ArticleDTO;
 import uz.resultme.service.ArticleService;
 
 import java.util.List;
@@ -46,26 +46,33 @@ public class ArticleController
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ArticleDTO>> findById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accepted-Language") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return articleService.getById(id, lang);
     }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ArticleDTO>>> findAll(
-            @RequestHeader(value = "Accepted-Language") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return articleService.findAll(lang);
+    }
+
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Article>> findWithLanguage(@PathVariable Long id)
+    {
+        return articleService.getById(id);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Article>> update(
             @PathVariable Long id,
-            @RequestParam(name = "json",required = false)String json,
-            @RequestPart(name = "main-photo",required = false)MultipartFile mainPhoto,
-            @RequestPart(name = "gallery",required = false) List<MultipartFile> gallery)
+            @RequestParam(name = "json", required = false) String json,
+            @RequestPart(name = "main-photo", required = false) MultipartFile mainPhoto,
+            @RequestPart(name = "body-photo", required = false) MultipartFile bodyPhoto,
+            @RequestPart(name = "gallery", required = false) List<MultipartFile> gallery)
     {
-        return articleService.update(id,json,mainPhoto,gallery);
+        return articleService.update(id, json, mainPhoto, bodyPhoto, gallery);
     }
 
     @DeleteMapping("/delete/{id}")

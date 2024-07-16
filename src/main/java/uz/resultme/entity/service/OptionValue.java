@@ -1,4 +1,4 @@
-package uz.resultme.entity;
+package uz.resultme.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,15 +13,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class CaseEffect
+public class OptionValue
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String value;
+    String nameUz;
 
-    String effectDescriptionUz;
+    String nameRu;
 
-    String effectDescriptionRu;
+    String tableUrlUz;
+
+    String tableUrlRu;
 }
+

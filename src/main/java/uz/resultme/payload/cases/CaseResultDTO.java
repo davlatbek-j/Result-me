@@ -1,43 +1,47 @@
-package uz.resultme.payload;
+package uz.resultme.payload.cases;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.CaseEffect;
+import uz.resultme.entity.cases.CaseResult;
 import uz.resultme.exception.LanguageNotSupportException;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CaseEffectDTO
+public class CaseResultDTO
 {
     Long id;
 
-    String value;
+    String title;
 
-    String effectDescription;
+    List<String> value;
 
-    public CaseEffectDTO(CaseEffect entity, String lang)
+    public CaseResultDTO(CaseResult entity, String lang)
     {
         this.id = entity.getId();
-        this.value = entity.getValue();
+
         switch (lang)
         {
             case "uz":
             {
-                this.effectDescription = entity.getEffectDescriptionUz();
+                this.title = entity.getTitleUz();
+                this.value = entity.getValueUz();
                 break;
             }
             case "ru":
             {
-                this.effectDescription = entity.getEffectDescriptionRu();
+                this.title = entity.getTitleRu();
+                this.value = entity.getValueRu();
                 break;
             }
             default:
-                throw new LanguageNotSupportException("Language not supported: " + lang);
+                throw new LanguageNotSupportException("Language not support: " + lang);
         }
     }
 }

@@ -1,12 +1,13 @@
-package uz.resultme.payload;
+package uz.resultme.payload.article;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.Article;
+import uz.resultme.entity.article.Article;
 import uz.resultme.exception.LanguageNotSupportException;
+import uz.resultme.payload.PhotoDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class ArticleDTO
 
     PhotoDTO mainPhoto;
 
+    PhotoDTO bodyPhoto;
+
     List<PhotoDTO> gallery;
 
     Boolean active;
@@ -35,6 +38,7 @@ public class ArticleDTO
     {
         this.id = entity.getId();
         this.mainPhoto = new PhotoDTO(entity.getMainPhoto());
+        this.bodyPhoto = new PhotoDTO(entity.getBodyPhoto());
         this.gallery = new ArrayList<>();
         entity.getGallery().forEach(i -> this.gallery.add(new PhotoDTO(i)));
         this.active = entity.getActive();

@@ -3,7 +3,7 @@ package uz.resultme.payload;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import uz.resultme.entity.Contact;
-import uz.resultme.entity.Phone;
+import uz.resultme.exception.LanguageNotSupportException;
 
 import java.util.List;
 
@@ -14,23 +14,37 @@ import java.util.List;
 @Getter
 @Setter
 
-public class ContactDto {
+public class ContactDto
+{
     Long id;
-    Integer orderNum;
     String instagram;
     String telegram;
     String facebook;
-    List<Phone> phone;
+    List<String> phone;
     String location;
 
-    public ContactDto(Contact contact){
-        this.id=contact.getId();
-        this.orderNum=contact.getOrderNum();
-        this.facebook=contact.getFacebook();
-        this.instagram=contact.getInstagram();
-        this.telegram=contact.getTelegram();
-        this.phone=contact.getPhones();
-        this.location=contact.getLocation();
+    public ContactDto(Contact entity, String lang)
+    {
+        this.id = entity.getId();
+        this.facebook = entity.getFacebook();
+        this.instagram = entity.getInstagram();
+        this.telegram = entity.getTelegram();
+        this.phone = entity.getPhone();
+        switch (lang.toLowerCase())
+        {
+            case "uz":
+            {
+                this.location = entity.getAddressUz();
+                break;
+            }
+            case "ru":
+            {
+                this.location = entity.getAddressRu();
+                break;
+            }
+            default:
+                throw new LanguageNotSupportException("Language not support:" + lang);
+        }
     }
 
 }

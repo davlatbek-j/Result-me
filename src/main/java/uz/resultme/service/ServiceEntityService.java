@@ -8,10 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.resultme.entity.Photo;
-import uz.resultme.entity.ServiceEntity;
+import uz.resultme.entity.service.OptionValue;
+import uz.resultme.entity.service.ServiceEntity;
 import uz.resultme.payload.ApiResponse;
-import uz.resultme.payload.ServiceEntityDTO;
-import uz.resultme.repository.ServiceEntityRepository;
+import uz.resultme.payload.service.ServiceEntityDTO;
+import uz.resultme.repository.OptionValueRepository;
+import uz.resultme.repository.TableRepository;
+import uz.resultme.repository.service.ServiceEntityRepository;
+import uz.resultme.repository.service.ServiceOptionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,9 @@ public class ServiceEntityService
 {
     private final ServiceEntityRepository serviceRepo;
     private final PhotoService photoService;
+    private final ServiceOptionRepository serviceOptionRepo;
+    private final TableRepository tableRepo;
+    private final OptionValueRepository optionValueRepo;
 
     public ResponseEntity<ApiResponse<ServiceEntity>> create(String json, MultipartFile file)
     {
@@ -40,6 +47,7 @@ public class ServiceEntityService
         try
         {
             ServiceEntity serviceEntity = objectMapper.readValue(json, ServiceEntity.class);
+            serviceEntity.setId(null);
 
             Photo icon = photoService.save(file);
             serviceEntity.setIcon(icon);
@@ -129,4 +137,36 @@ public class ServiceEntityService
         return ResponseEntity.ok(apiResponse);
     }
 
+    public ResponseEntity<?> deleteTableOfOption(Long optionValueId)
+    {
+        ApiResponse<?> response = new ApiResponse<>();
+
+        if (!optionValueRepo.existsById(optionValueId))
+        {
+            response.setMessage("Option Value not found by id: " + optionValueId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        OptionValue optionValue = optionValueRepo.findById(optionValueId).get();
+        optionValue.setTableUrlRu(null);
+        optionValue.setTableUrlUz(null);
+        optionValueRepo.save(optionValue);
+
+        response.setMessage("Successfully deleted");
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceEntity>> findById(Long id)
+    {
+        ApiResponse<ServiceEntity> response = new ApiResponse<>();
+        if (!serviceRepo.existsById(id))
+        {
+            response.setMessage("Service not found by id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        ServiceEntity serviceEntity = serviceRepo.findById(id).get();
+        response.setMessage("Found");
+        response.setData(serviceEntity);
+        return ResponseEntity.ok(response);
+    }
 }

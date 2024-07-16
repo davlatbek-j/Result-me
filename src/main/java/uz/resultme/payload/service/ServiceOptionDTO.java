@@ -1,13 +1,13 @@
-package uz.resultme.payload;
+package uz.resultme.payload.service;
 
-import jakarta.persistence.ElementCollection;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.resultme.entity.ServiceOption;
+import uz.resultme.entity.service.ServiceOption;
 import uz.resultme.exception.LanguageNotSupportException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,23 +19,23 @@ public class ServiceOptionDTO
 
     String name;
 
-    List<String> value;
+    List<OptionValueDTO> optionValue;
 
-    public ServiceOptionDTO(ServiceOption entity , String lang)
+    public ServiceOptionDTO(ServiceOption entity, String lang)
     {
         this.id = entity.getId();
+        this.optionValue = new ArrayList<>();
+        entity.getOptionValue().forEach(i -> this.optionValue.add(new OptionValueDTO(i, lang)));
         switch (lang.toLowerCase())
         {
             case "uz":
             {
                 this.name = entity.getNameUz();
-                this.value = entity.getValueUz();
                 break;
             }
             case "ru":
             {
                 this.name = entity.getNameRu();
-                this.value = entity.getValueRu();
                 break;
             }
             default:

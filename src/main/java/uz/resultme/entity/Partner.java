@@ -17,7 +17,6 @@ public class Partner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    Integer orderNum;
     @OneToOne
     Photo photo;
     String partnerUrl;
