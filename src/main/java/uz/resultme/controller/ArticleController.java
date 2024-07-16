@@ -29,18 +29,12 @@ public class ArticleController
     @PostMapping("/image")
     public ResponseEntity<ApiResponse<Article>> uploadImage(
             @RequestParam(name = "id") Long id,
-            @RequestParam(name = "photo") MultipartFile file
-    ) {
-        return articleService.uploadImage(id, file);
-    }
-
-    @PostMapping("/gallery")
-    public ResponseEntity<ApiResponse<Article>> uploadGallery(
-            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "photo") MultipartFile file,
             @RequestParam(name = "gallery") List<MultipartFile> files
     ) {
-        return articleService.uploadGallery(id, files);
+        return articleService.uploadImage(id, file,files);
     }
+
 
 
     @GetMapping("/get/{id}")
@@ -67,13 +61,21 @@ public class ArticleController
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Article>> update(
             @PathVariable Long id,
-            @RequestParam(name = "json", required = false) String json,
+            @RequestBody Article article)
+    {
+        return articleService.update(id, article);
+    }
+
+    @PutMapping("/update/image/{id}")
+    public ResponseEntity<ApiResponse<Article>> update(
+            @PathVariable Long id,
             @RequestPart(name = "main-photo", required = false) MultipartFile mainPhoto,
             @RequestPart(name = "body-photo", required = false) MultipartFile bodyPhoto,
             @RequestPart(name = "gallery", required = false) List<MultipartFile> gallery)
     {
-        return articleService.update(id, json, mainPhoto, bodyPhoto, gallery);
+        return articleService.updatePhoto(id, mainPhoto, bodyPhoto, gallery);
     }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Article>> delete(@PathVariable Long id)
