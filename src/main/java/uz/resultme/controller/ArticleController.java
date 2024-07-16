@@ -22,12 +22,26 @@ public class ArticleController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Article>> create(
-            @RequestParam(name = "json") String jsonArticle,
-            @RequestPart(name = "main-photo") MultipartFile mainPhoto,
-            @RequestPart(name = "gallery") List<MultipartFile> gallery)
-    {
-        return articleService.create(jsonArticle, mainPhoto, gallery);
+            @RequestParam(name = "json") String jsonArticle) {
+        return articleService.create(jsonArticle);
     }
+
+    @PostMapping("/image")
+    public ResponseEntity<ApiResponse<Article>> uploadImage(
+            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "photo") MultipartFile file
+    ) {
+        return articleService.uploadImage(id, file);
+    }
+
+    @PostMapping("/gallery")
+    public ResponseEntity<ApiResponse<Article>> uploadGallery(
+            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "gallery") List<MultipartFile> files
+    ) {
+        return articleService.uploadGallery(id, files);
+    }
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ArticleDTO>> findById(
