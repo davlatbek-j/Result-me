@@ -50,14 +50,14 @@ public class ArticleService
     public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file) {
         ApiResponse<Article> response = new ApiResponse<>();
 
-        if (!articleRepository.existsById(id)) {
+        if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepo.findById(id).get();
         Photo main = photoService.save(file);
         article.setMainPhoto(main);
-        Article saved = articleRepository.save(article);
+        Article saved = articleRepo.save(article);
         response.setMessage("Photo succesfully saved");
         response.setData(saved);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -65,17 +65,17 @@ public class ArticleService
 
     public ResponseEntity<ApiResponse<Article>> uploadGallery(Long id,List<MultipartFile> gallery){
         ApiResponse<Article> response = new ApiResponse<>();
-        if (!articleRepository.existsById(id)) {
+        if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        Article article = articleRepository.findById(id).get();
+        Article article = articleRepo.findById(id).get();
 
         article.setGallery(new ArrayList<>());
         for (MultipartFile multipartFile : gallery)
             article.getGallery().add(photoService.save(multipartFile));
 
-        Article saved = articleRepository.save(article);
+        Article saved = articleRepo.save(article);
         response.setMessage("Gallery succesfully saved");
         response.setData(saved);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
