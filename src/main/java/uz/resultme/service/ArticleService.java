@@ -42,7 +42,7 @@ public class ArticleService {
 
     }
 
-    public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file) {
+    public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file, List<MultipartFile> gallery) {
         ApiResponse<Article> response = new ApiResponse<>();
 
         if (!articleRepo.existsById(id)) {
@@ -52,26 +52,13 @@ public class ArticleService {
         Article article = articleRepo.findById(id).get();
         Photo main = photoService.save(file);
         article.setMainPhoto(main);
-        Article saved = articleRepo.save(article);
-        response.setMessage("Photo succesfully saved");
-        response.setData(saved);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    public ResponseEntity<ApiResponse<Article>> uploadGallery(Long id, List<MultipartFile> gallery) {
-        ApiResponse<Article> response = new ApiResponse<>();
-        if (!articleRepo.existsById(id)) {
-            response.setMessage("Article with id " + id + " does not exist");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-        Article article = articleRepo.findById(id).get();
 
         article.setGallery(new ArrayList<>());
         for (MultipartFile multipartFile : gallery)
             article.getGallery().add(photoService.save(multipartFile));
 
         Article saved = articleRepo.save(article);
-        response.setMessage("Gallery succesfully saved");
+        response.setMessage("Photo succesfully saved");
         response.setData(saved);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -113,55 +100,73 @@ public class ArticleService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<ApiResponse<Article>> update(Long id, String json, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery) {
+    public ResponseEntity<ApiResponse<Article>> update(Long id, Article article/*, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery*/) {
         ApiResponse<Article> response = new ApiResponse<>();
         if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        try {
-            Article newArticle = articleRepo.findById(id).get();
+        Article newArticle = articleRepo.findById(id).get();
 
-            Photo oldMain = newArticle.getMainPhoto();
-            Photo oldBody = newArticle.getBodyPhoto();
-            List<Photo> oldGallery = newArticle.getGallery();
-
-            if (json != null) {
-                ObjectMapper objMapper = new ObjectMapper();
-                newArticle = objMapper.readValue(json, Article.class);
-            }
-
-            if (newMainPhoto == null || newMainPhoto.isEmpty())
-                newArticle.setMainPhoto(oldMain);
-            else
-                newArticle.setMainPhoto(photoService.save(newMainPhoto));
-
-            if (newGallery == null || newGallery.get(0).isEmpty())
-                newArticle.setGallery(oldGallery);
-            else {
-                newArticle.setGallery(new ArrayList<>());
-                for (MultipartFile multipartFile : newGallery)
-                    if (multipartFile.getSize() > 0)
-                        newArticle.getGallery().add(photoService.save(multipartFile));
-            }
-
-            if (newBodyPhoto == null || newBodyPhoto.isEmpty())
-                newArticle.setBodyPhoto(oldBody);
-            else {
-                newArticle.setBodyPhoto(photoService.save(newBodyPhoto));
-            }
-
-            newArticle.setId(id);
-            articleRepo.save(newArticle);
-
-            response.setMessage("Successfully updated");
-            response.setData(newArticle);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        if (article.getTitleUz() != null || article.getTitleUz().isEmpty()) {
+            newArticle.setThemeUz(article.getThemeUz());
         }
+        if (article.getTitleRu() != null || article.getTitleRu().isEmpty()) {
+            newArticle.setTitleRu(article.getTitleRu());
+        }
+        if (article.getThemeUz() != null || article.getThemeUz().isEmpty()) {
+            newArticle.setThemeUz(article.getThemeUz());
+        }
+        if (article.getThemeRu() != null || article.getThemeRu().isEmpty()) {
+            newArticle.setPlan(article.getPlan());
+        }
+
+
+        newArticle.setId(id);
+        articleRepo.save(newArticle);
+
+        response.setMessage("Successfully updated");
+        response.setData(newArticle);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    public ResponseEntity<ApiResponse<Article>> updatePhoto(Long id, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery) {
+
+        ApiResponse<Article> response = new ApiResponse<>();
+        Article newArticle = articleRepo.findById(id).get();
+
+        Photo oldMain = newArticle.getMainPhoto();
+        Photo oldBody = newArticle.getBodyPhoto();
+        List<Photo> oldGallery = newArticle.getGallery();
+
+        if (newMainPhoto == null || newMainPhoto.isEmpty())
+            newArticle.setMainPhoto(oldMain);
+        else
+            newArticle.setMainPhoto(photoService.save(newMainPhoto));
+
+        if (newGallery == null || newGallery.get(0).isEmpty())
+            newArticle.setGallery(oldGallery);
+        else {
+            newArticle.setGallery(new ArrayList<>());
+            for (MultipartFile multipartFile : newGallery)
+                if (multipartFile.getSize() > 0)
+                    newArticle.getGallery().add(photoService.save(multipartFile));
+        }
+
+        if (newBodyPhoto == null || newBodyPhoto.isEmpty())
+            newArticle.setBodyPhoto(oldBody);
+        else {
+            newArticle.setBodyPhoto(photoService.save(newBodyPhoto));
+        }
+
+        newArticle.setId(id);
+        articleRepo.save(newArticle);
+
+        response.setMessage("Successfully updated");
+        response.setData(newArticle);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse<Article>> delete(Long id) {
