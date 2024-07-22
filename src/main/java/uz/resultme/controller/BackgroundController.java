@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import uz.resultme.entity.Background;
 import uz.resultme.payload.ApiResponse;
 import uz.resultme.payload.BackgroundDTO;
 import uz.resultme.service.BackgroundService;
@@ -19,10 +20,19 @@ public class BackgroundController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<BackgroundDTO>> create(
-            @RequestParam(name = "active") Boolean active,
-            @RequestPart(name = "photo") MultipartFile file)
+            @RequestParam(name = "active") Boolean active
+            )
     {
-        return backgroundService.create(active,file);
+        return backgroundService.create(active);
+    }
+
+    @PostMapping("/image")
+    public ResponseEntity<ApiResponse<Background>> create(
+            @RequestParam(name = "id") Long id,
+            @RequestParam(name = "active") MultipartFile file
+    )
+    {
+        return backgroundService.uploadPhoto(id,file);
     }
 
     @GetMapping("/get/{id}")

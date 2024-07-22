@@ -22,11 +22,20 @@ public class ServiceController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<ServiceEntity>> create(
-            @RequestPart(name = "icon") MultipartFile file,
-            @RequestParam(name = "json") String json)
+            @RequestBody ServiceEntity serviceEntity)
     {
-        return entityService.create(json, file);
+        return entityService.create(serviceEntity);
     }
+
+    @PostMapping("/icon")
+    public ResponseEntity<ApiResponse<ServiceEntity>> uploadIcon(
+            @RequestParam(name = "id") Long id,
+            @RequestPart(name = "icon") MultipartFile file)
+    {
+        return entityService.uploadPhoto(id,file);
+    }
+
+
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<ServiceEntityDTO>> findById(
@@ -53,10 +62,17 @@ public class ServiceController
     @PutMapping("/edit/{id}")
     public ResponseEntity<ApiResponse<ServiceEntity>> edit(
             @PathVariable Long id,
-            @RequestParam(name = "icon",required = false) MultipartFile file,
-            @RequestParam(name = "json",required = false) String json)
+            @RequestBody ServiceEntity service)
     {
-        return entityService.update(id, json, file);
+        return entityService.update(id, service);
+    }
+
+    @PutMapping("/edit/icon/{id}")
+    public ResponseEntity<ApiResponse<ServiceEntity>> edit(
+            @PathVariable Long id,
+            @RequestParam MultipartFile file)
+    {
+        return entityService.uploadPhoto(id, file);
     }
 
     @DeleteMapping("/delete/{id}")

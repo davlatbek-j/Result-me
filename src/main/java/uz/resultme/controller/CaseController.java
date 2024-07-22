@@ -25,11 +25,19 @@ public class CaseController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Case>> createCase(
-            @RequestParam(name = "json") String caseJson,
-            @RequestPart(name = "main-photo") MultipartFile mainPhoto,
-            @RequestPart(name = "gallery") List<MultipartFile> gallery)
+            @RequestBody Case case1
+            )
     {
-        return caseService.create(caseJson,mainPhoto,gallery);
+        return caseService.create(case1);
+    }
+
+    @PostMapping("/image")
+    public ResponseEntity<ApiResponse<Case>> uploadPhoto(
+            @RequestParam Long id,
+            @RequestPart(name = "main-photo") MultipartFile mainPhoto,
+            @RequestPart(name = "gallery") List<MultipartFile> gallery
+    ){
+        return caseService.updatePhoto(id,mainPhoto,gallery);
     }
 
     @GetMapping("/get/{id}")
@@ -65,7 +73,17 @@ public class CaseController
             @RequestBody Case acase)
     {
         return caseService.update(id,acase);
-//        return caseService.update(id,caseJson,mainPhoto,gallery);
+
+    }
+
+    @PutMapping("/update/image/{id}")
+    public ResponseEntity<ApiResponse<Case>> updateCaseImageById(
+            @PathVariable Long id,
+           @RequestParam(name = "main-photo") MultipartFile file,
+            @RequestParam(name = "gallery") List<MultipartFile> files )
+    {
+        return caseService.updatePhoto(id,file,files);
+
     }
 
 }

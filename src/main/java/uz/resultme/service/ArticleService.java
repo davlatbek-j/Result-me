@@ -45,6 +45,13 @@ public class ArticleService {
     public ResponseEntity<ApiResponse<Article>> uploadImage(Long id, MultipartFile file, List<MultipartFile> gallery) {
         ApiResponse<Article> response = new ApiResponse<>();
 
+        if (!(file.getContentType().equals("image/png") ||
+                file.getContentType().equals("image/svg+xml")))
+        {
+            response.setMessage("Invalid file , only image/png or image/svg+xml");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
         if (!articleRepo.existsById(id)) {
             response.setMessage("Article with id " + id + " does not exist");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -109,25 +116,25 @@ public class ArticleService {
 
         Article newArticle = articleRepo.findById(id).get();
 
-        if (article.getTitleUz() != null || article.getTitleUz().isEmpty()) {
+        if (article.getTitleUz() != null || !article.getTitleUz().isEmpty()) {
             newArticle.setThemeUz(article.getThemeUz());
         }
-        if (article.getTitleRu() != null || article.getTitleRu().isEmpty()) {
+        if (article.getTitleRu() != null || !article.getTitleRu().isEmpty()) {
             newArticle.setTitleRu(article.getTitleRu());
         }
-        if (article.getThemeUz() != null || article.getThemeUz().isEmpty()) {
+        if (article.getThemeUz() != null || !article.getThemeUz().isEmpty()) {
             newArticle.setThemeUz(article.getThemeUz());
         }
-        if (article.getThemeRu() != null || article.getThemeRu().isEmpty()) {
+        if (article.getThemeRu() != null || !article.getThemeRu().isEmpty()) {
             newArticle.setPlan(article.getPlan());
         }
 
 
         newArticle.setId(id);
-        articleRepo.save(newArticle);
+        Article save = articleRepo.save(newArticle);
 
         response.setMessage("Successfully updated");
-        response.setData(newArticle);
+        response.setData(save);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
@@ -135,6 +142,20 @@ public class ArticleService {
     public ResponseEntity<ApiResponse<Article>> updatePhoto(Long id, MultipartFile newMainPhoto, MultipartFile newBodyPhoto, List<MultipartFile> newGallery) {
 
         ApiResponse<Article> response = new ApiResponse<>();
+
+
+        if (!(newMainPhoto.getContentType().equals("image/png") ||
+                newMainPhoto.getContentType().equals("image/svg+xml")))
+        {
+            response.setMessage("Invalid file , only image/png or image/svg+xml");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        if (!articleRepo.existsById(id)){
+            if (!articleRepo.existsById(id)) {
+                response.setMessage("Article with id " + id + " does not exist");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        }
         Article newArticle = articleRepo.findById(id).get();
 
         Photo oldMain = newArticle.getMainPhoto();
@@ -162,10 +183,10 @@ public class ArticleService {
         }
 
         newArticle.setId(id);
-        articleRepo.save(newArticle);
+        Article save = articleRepo.save(newArticle);
 
         response.setMessage("Successfully updated");
-        response.setData(newArticle);
+        response.setData(save);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

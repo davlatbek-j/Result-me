@@ -21,11 +21,19 @@ public class PartnerController
     private final PartnerService partnerService;
 
     @PostMapping("/create")
-    ResponseEntity<ApiResponse<PartnerDTO>> addPartner(
-            @RequestParam(name = "photo") MultipartFile file,
-            @RequestParam(name = "url") String url)
+    ResponseEntity<ApiResponse<Partner>> addPartner(
+
+            @RequestBody Partner partner)
     {
-        return partnerService.addPartner(file, url);
+        return partnerService.addPartner(partner);
+    }
+
+    @PostMapping("/image")
+    ResponseEntity<ApiResponse<Partner>> uploadImage(
+           @RequestParam(name = "id") Long id,
+            @RequestParam(name = "photo") MultipartFile file
+    ){
+        return partnerService.uploadImage(id,file);
     }
 
     @GetMapping("/get-all")
@@ -43,11 +51,19 @@ public class PartnerController
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Partner>> updatePartner(
             @PathVariable Long id,
-            @RequestParam(name = "photo") MultipartFile file,
-            @RequestParam(name = "url") String url)
+            @RequestBody Partner partner)
     {
-        return partnerService.updatePartner(id, file, url);
+        return partnerService.updatePartner(id, partner);
     }
+
+
+    @PutMapping("/update/image/{id}")
+    public ResponseEntity<ApiResponse<Partner>> updatePartnerImage(
+            @PathVariable Long id,
+            @RequestParam(name = "photo") MultipartFile file
+    ){
+        return partnerService.updateImage(id,file);
+}
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePartner(@PathVariable Long id)
