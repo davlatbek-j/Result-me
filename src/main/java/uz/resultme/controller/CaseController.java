@@ -29,15 +29,15 @@ public class CaseController
             @RequestPart(name = "main-photo") MultipartFile mainPhoto,
             @RequestPart(name = "gallery") List<MultipartFile> gallery)
     {
-        return caseService.create(caseJson,mainPhoto,gallery);
+        return caseService.create(caseJson, mainPhoto, gallery);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<CaseDTO>> getCaseById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
-        return caseService.findById(id,lang);
+        return caseService.findById(id, lang);
     }
 
     @GetMapping("/get-full-data/{id}")
@@ -48,7 +48,7 @@ public class CaseController
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<CaseDTO>>> getCaseById(
-            @RequestHeader(value = "Accept-Language",defaultValue = "ru") String lang)
+            @RequestHeader(value = "Accept-Language", defaultValue = "ru") String lang)
     {
         return caseService.findAll(lang);
     }
@@ -56,16 +56,18 @@ public class CaseController
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<?>> deleteCaseById(@PathVariable Long id)
     {
-       return caseService.deleteById(id);
+        return caseService.deleteById(id);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Case>> updateCaseById(
             @PathVariable Long id,
-            @RequestBody Case acase)
+            @RequestParam(value = "json") String caseJson,
+            @RequestParam(value = "main-photo") MultipartFile mainPhoto,
+            @RequestParam(value = "gallery") List<MultipartFile> gallery)
     {
-        return caseService.update(id,acase);
-//        return caseService.update(id,caseJson,mainPhoto,gallery);
+//        return caseService.update(id,acase);
+        return caseService.update(id, caseJson, mainPhoto, gallery);
     }
 
 }
