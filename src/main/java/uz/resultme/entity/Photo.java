@@ -1,5 +1,7 @@
 package uz.resultme.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +25,15 @@ public class Photo
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @JsonIgnore
     String name;
 
+    @JsonIgnore
     String filepath;
 
     String httpUrl;
 
+    @JsonIgnore
     String type;
 
     public Photo(String name, String filepath, String httpUrl)
