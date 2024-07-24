@@ -31,15 +31,12 @@ public class Article
     List<Plan> plan;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     Photo mainPhoto;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     Photo bodyPhoto;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
     List<Photo> gallery;
 
     Boolean active;
