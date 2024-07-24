@@ -32,6 +32,9 @@ public class Article
     List<Plan> plan;
 
     @OneToOne(cascade = CascadeType.ALL)
+    Plan conclusion;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Photo mainPhoto;
 
