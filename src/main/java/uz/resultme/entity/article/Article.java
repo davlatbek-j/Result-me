@@ -1,6 +1,7 @@
 package uz.resultme.entity.article;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -31,12 +32,15 @@ public class Article
     List<Plan> plan;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Photo mainPhoto;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Photo bodyPhoto;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<Photo> gallery;
 
     Boolean active;
