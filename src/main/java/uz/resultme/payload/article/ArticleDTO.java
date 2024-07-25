@@ -26,6 +26,8 @@ public class ArticleDTO
 
     List<PlanDTO> plan;
 
+    PlanDTO conclusion;
+
     PhotoDTO mainPhoto;
 
     PhotoDTO bodyPhoto;
@@ -51,6 +53,7 @@ public class ArticleDTO
                 this.theme = entity.getThemeUz();
                 this.plan = new ArrayList<>();
                 entity.getPlan().forEach(i -> this.plan.add(new PlanDTO(i, "uz")));
+                this.conclusion = new PlanDTO(entity.getConclusion(), "uz");
                 break;
             }
             case "ru":
@@ -59,6 +62,7 @@ public class ArticleDTO
                 this.theme = entity.getThemeRu();
                 this.plan = new ArrayList<>();
                 entity.getPlan().forEach(i -> this.plan.add(new PlanDTO(i, "ru")));
+                this.conclusion = new PlanDTO(entity.getConclusion(), "ru");
                 break;
             }
             default:
