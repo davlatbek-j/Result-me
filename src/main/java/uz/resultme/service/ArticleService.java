@@ -46,8 +46,7 @@ public class ArticleService {
         ApiResponse<Article> response = new ApiResponse<>();
 
         if (!(file.getContentType().equals("image/png") ||
-                file.getContentType().equals("image/svg+xml")))
-        {
+                file.getContentType().equals("image/svg+xml"))) {
             response.setMessage("Invalid file , only image/png or image/svg+xml");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
@@ -117,7 +116,7 @@ public class ArticleService {
         Article newArticle = articleRepo.findById(id).get();
 
         if (article.getTitleUz() != null || !article.getTitleUz().isEmpty()) {
-            newArticle.setTitleUz(article.getThemeUz());
+            newArticle.setTitleUz(article.getTitleUz());
         }
         if (article.getTitleRu() != null || !article.getTitleRu().isEmpty()) {
             newArticle.setTitleRu(article.getTitleRu());
@@ -126,11 +125,14 @@ public class ArticleService {
             newArticle.setThemeUz(article.getThemeUz());
         }
         if (article.getThemeRu() != null || !article.getThemeRu().isEmpty()) {
+            newArticle.setThemeRu(article.getThemeRu());
+        }
+        if (article.getPlan() != null ||!article.getPlan().isEmpty()){
             newArticle.setPlan(article.getPlan());
         }
 
 
-        newArticle.setId(id);
+            newArticle.setId(id);
         Article save = articleRepo.save(newArticle);
 
         response.setMessage("Successfully updated");
@@ -145,12 +147,11 @@ public class ArticleService {
 
 
         if (!(newMainPhoto.getContentType().equals("image/png") ||
-                newMainPhoto.getContentType().equals("image/svg+xml")))
-        {
+                newMainPhoto.getContentType().equals("image/svg+xml"))) {
             response.setMessage("Invalid file , only image/png or image/svg+xml");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        if (!articleRepo.existsById(id)){
+        if (!articleRepo.existsById(id)) {
             if (!articleRepo.existsById(id)) {
                 response.setMessage("Article with id " + id + " does not exist");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
