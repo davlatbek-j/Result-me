@@ -22,6 +22,9 @@ public class PlanDTO
 
     public PlanDTO(Plan entity, String lang)
     {
+        if (entity == null)
+            return;
+
         this.id = entity.getId();
         switch (lang.toLowerCase())
         {
