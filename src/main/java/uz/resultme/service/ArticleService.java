@@ -117,7 +117,7 @@ public class ArticleService {
         Article newArticle = articleRepo.findById(id).get();
 
         if (article.getTitleUz() != null || !article.getTitleUz().isEmpty()) {
-            newArticle.setThemeUz(article.getThemeUz());
+            newArticle.setTitleUz(article.getThemeUz());
         }
         if (article.getTitleRu() != null || !article.getTitleRu().isEmpty()) {
             newArticle.setTitleRu(article.getTitleRu());
